@@ -1,22 +1,45 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
+@theme {
+  /* Map Tailwind's expected semantic color names to your CSS variables */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-primary: #00B7B5;               /* Your green primary */
+  --color-primary-foreground: #000000;    /* Black text on green (adjust if needed) */
+
+  --color-destructive: #FF5555;           /* Standard red for destructive */
+  --color-destructive-foreground: #ffffff;
+
+  --color-secondary: #F4F4F4;             /* Light gray (slate-200) */
+  --color-secondary-foreground: #005461;  /* Dark text (slate-900) */
+
+  --color-accent: #e2e8f0;                /* Same as secondary for hover states */
+  --color-accent-foreground: #005461;
+
+  --color-input: #e2e8f0;                 /* Border color for outline variant */
+  /* Add more if needed, e.g., --color-ring for focus rings */
 }
 
+:root {
+  --background: #ffffff;
+  --foreground: hsl(0 0% 9%);
+}
+
+/* Dark mode (prefers-color-scheme) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: hsl(0 0% 6%);
+    --foreground: hsl(0 0% 91%);
+    /* Optionally override UI colors for dark mode */
+    /* --color-primary: #your-dark-primary; */
   }
+}
+
+/* Or use class-based dark mode (common in Next.js) */
+html.dark {
+  --background: hsl(0 0% 6%);
+  --foreground: hsl(0 0% 91%);
 }
 
 body {
