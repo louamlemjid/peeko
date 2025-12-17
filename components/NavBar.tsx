@@ -180,7 +180,8 @@ export default function Navigation() {
                 <SignUpButton mode="modal">
                   <Button
                     size="sm"
-                    className="w-full bg-gold text-black hover:bg-gold/90 mt-2"
+                    variant='outline'
+                    className=""
                     onClick={() => setIsOpen(false)}
                   >
                     Sign Up
