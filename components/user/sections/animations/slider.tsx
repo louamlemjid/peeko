@@ -39,8 +39,8 @@ const animations: Animation[] = [
 
 export default function Slider() {
   return (
-    <section className="py-12 px-4 bg-gray-50">
-      <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
+    <section className="py-12 px-4 bg-gray-500">
+      <h2 className="text-3xl font-bold text-center mb-12 text-gray-200">
         Choose an Animation
       </h2>
 

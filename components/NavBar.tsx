@@ -53,16 +53,16 @@ export default function Navigation() {
             <Link href="/" className="flex items-center gap-2 ">
               <div className="relative w-32 aspect-[3/1] "> 
         <Image
-          src="/logo.png"
+          src="/peeko.jpg"
               alt="Logo"
               fill
-              className="object-contain block dark:hidden md:ml-4"
+              className="object-contain block dark:hidden md:ml-4 rounded-3xl"
              />
                  <Image
-              src="/white-logo.png"
+              src="/peeko.jpg"
           alt="Logo"
              fill
-             className="object-contain hidden dark:block md:ml-4"
+             className="object-contain hidden dark:block md:ml-4 rounded-3xl"
         />
           </div>
             </Link>

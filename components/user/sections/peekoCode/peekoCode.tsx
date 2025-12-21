@@ -34,8 +34,8 @@ const PeekoCode: React.FC<PeekoCodeProps> = ({
         <p className="text-sm text-gray-600 mb-2 text-center">{label}</p>
       )}
       
-      <div className="relative bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
-        <div className="text-3xl md:text-4xl font-mono font-bold text-gray-900 tracking-widest select-all">
+      <div className="relative bg-transparent border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
+        <div className="text-3xl md:text-4xl font-mono font-bold text-gray-200 tracking-widest select-all">
           {code.trim()}
         </div>
 

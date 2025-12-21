@@ -1,5 +1,7 @@
 import crypto from "crypto";
 import { IUser, User } from "@/model/user";
+import "@/model/peeko"; 
+
 import dbConnect from '@/lib/mongoDB'; 
 
 /* ===== Generate unique user code ===== */
@@ -58,9 +60,25 @@ export async function createUser({
 }
 
 export async function getUserByCode(code: string): Promise<IUser | null> {
+  await dbConnect();
   try {
     const user = await User.findOne({ userCode: code }).lean();
     return user ? JSON.parse(JSON.stringify(user)) : null;
+  } catch (error) {
+    console.error("service/user: ",error);
+    return null
+  }
+}
+
+export async function getUserByClerkId(clerkId: string) :Promise<IUser|null> {
+  await dbConnect();
+
+  try {
+    const user = await User.findOne({ clerkId })
+    .populate("peeko")
+    .lean(); // lean() returns plain JSON
+console.log(user)
+  return user ? JSON.parse(JSON.stringify(user)) : null;
   } catch (error) {
     console.error("service/user: ",error);
     return null

@@ -5,7 +5,7 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Hero Section */}
       <section className="relative flex flex-col items-center justify-center py-24 px-8 text-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-orange-400/50 to-background" />
         <div className="relative z-10 max-w-4xl">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
             Meet <span className="text-primary">Peeko</span>
