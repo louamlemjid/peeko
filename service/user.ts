@@ -19,7 +19,7 @@ async function generateUniqueUserCode(): Promise<string> {
 export interface CreateUserInput {
   clerkId: string;
   email?: string;
-  username: string;
+  username?: string;
   firstName:string|null;
   lastName:string|null;
 }

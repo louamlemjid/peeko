@@ -7,7 +7,7 @@ export interface IUser {
   /* Clerk */
   clerkId: string;
   email?: string;
-  username: string;
+  username?: string;
 
   firstName:string;
   lastName:string;
@@ -50,9 +50,6 @@ const UserSchema = new Schema<IUser>(
 
     username: {
       type: String,
-      required: true,
-      unique: true,
-      trim: true,
     },
     firstName:{
       type:String,
