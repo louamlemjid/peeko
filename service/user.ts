@@ -1,5 +1,6 @@
 import crypto from "crypto";
-import { User } from "@/model/user";
+import { IUser, User } from "@/model/user";
+import dbConnect from '@/lib/mongoDB'; 
 
 /* ===== Generate unique user code ===== */
 async function generateUniqueUserCode(): Promise<string> {
@@ -19,16 +20,20 @@ export interface CreateUserInput {
   clerkId: string;
   email?: string;
   username: string;
-  phoneNumber: string;
+  firstName:string|null;
+  lastName:string|null;
 }
 
-export async function createUserService({
+export async function createUser({
   clerkId,
   email,
   username,
-  phoneNumber,
-}: CreateUserInput) {
-  /* Prevent duplicates (webhook retries safe) */
+  firstName,
+  lastName
+}: CreateUserInput):Promise<IUser|null> {
+  await dbConnect()
+  try {
+    /* Prevent duplicates (webhook retries safe) */
   const existingUser = await User.findOne({ clerkId });
   if (existingUser) return existingUser;
 
@@ -38,11 +43,26 @@ export async function createUserService({
     clerkId,
     email,
     username,
-    phoneNumber,
     userCode,
+    firstName,
+    lastName,
     phoneVerified: false,
     isOnline: false,
   });
 
   return user;
+  } catch (error) {
+    console.error("service/user : ",error);
+    return null
+  }
+}
+
+export async function getUserByCode(code: string): Promise<IUser | null> {
+  try {
+    const user = await User.findOne({ userCode: code }).lean();
+    return user ? JSON.parse(JSON.stringify(user)) : null;
+  } catch (error) {
+    console.error("service/user: ",error);
+    return null
+  }
 }

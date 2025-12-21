@@ -1,27 +1,31 @@
 import mongoose, { Schema, model, models } from "mongoose";
+import { IPeeko } from "./peeko";
 
 export interface IUser {
-  _id: mongoose.Types.ObjectId;
+  _id: string;
 
   /* Clerk */
   clerkId: string;
   email?: string;
   username: string;
 
+  firstName:string;
+  lastName:string;
   /* Verification code (generated in webhook service) */
   userCode?: string;
 
   /* Phone verification */
-  phoneNumber: string;
+  phoneNumber?: string;
   phoneVerified: boolean;
 
   /* Presence */
-  isOnline: boolean;
+  isOnline?: boolean;
   lastSeenAt?: Date;
 
   /* Social */
-  friends: mongoose.Types.ObjectId[];
-  pendingFriendRequests: mongoose.Types.ObjectId[];
+  friends: string[] | IUser[];
+  pendingFriendRequests: string[] | IUser[];
+  peeko:string | IPeeko;
 
   /* Timestamps */
   createdAt: Date;
@@ -50,7 +54,15 @@ const UserSchema = new Schema<IUser>(
       unique: true,
       trim: true,
     },
+    firstName:{
+      type:String,
+      default:null
+    },
+    lastName:{
+      type:String,
+      default:null
 
+    },
     /* ===== User Code (Peeko verification) ===== */
     userCode: {
       type: String,
@@ -62,7 +74,7 @@ const UserSchema = new Schema<IUser>(
     /* ===== Phone ===== */
     phoneNumber: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
       index: true,
     },
@@ -98,6 +110,12 @@ const UserSchema = new Schema<IUser>(
         default: [],
       },
     ],
+    peeko :{
+      type:Schema.Types.ObjectId,
+      ref:"Peeko",
+      unique: true,
+      sparse: true,
+    },
   },
   {
     timestamps: true,
