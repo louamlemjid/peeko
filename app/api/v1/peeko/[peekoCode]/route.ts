@@ -26,7 +26,7 @@ export async function GET(req: NextRequest, { params }: Params) {
         { status: 404 }
       );
     }
-
+    console.log(peeko)
     return NextResponse.json({
       success: true,
       peeko,
