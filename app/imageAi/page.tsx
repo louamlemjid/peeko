@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "@uploadthing/react";
 import { UploadButton, useUploadThing } from "@/utils/uploadthing";
 import { toast } from "react-toastify";
 import Image from "next/image";
+import { DataList } from "@/components/ui/dataList";
 
 export default function BinUploadPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -15,6 +16,8 @@ export default function BinUploadPage() {
     size: number;
   } | null>(null);
 
+  const [category,setCategory] = useState<string>("")
+  useEffect(()=>{console.log(category)},[category])
   const { startUpload, isUploading } = useUploadThing("binUploader", {
     onClientUploadComplete: (res) => {
       const file = res?.[0];
@@ -44,10 +47,30 @@ export default function BinUploadPage() {
       "": [],
     },
   });
+    const categoryOptions = [
+      { value: "", label: "None" },
+  { value: "idle", label: "Idle" },
+  { value: "walk", label: "Walk" },
+  { value: "run", label: "Run" },
+  { value: "jump", label: "Jump" },
+  { value: "dance", label: "Dance" },
+  { value: "attack", label: "Attack" },
+  { value: "happy", label: "Happy" },
+  { value: "sad", label: "Sad" },
+  { value: "wave", label: "Wave" },
+  { value: "other", label: "Other" },
+];
 
   return (
     <div className="pt-16 max-w-3xl mx-auto space-y-10">
+    
 
+<DataList
+  options={categoryOptions}
+  value={category}
+  onValueChange={setCategory}
+  placeholder="Select category or type a new one..."
+/>
       {/* ================= BIN UPLOAD ================= */}
       <div
         {...getRootProps()}

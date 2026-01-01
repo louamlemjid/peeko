@@ -21,6 +21,7 @@ export default function EditAnimationsPage() {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [categories,setCategories] = useState<{ value: string, label: string }[]>([{ value: "", label: "None" }])
 
   // Debounced fetch to avoid hammering the API while typing
   const debouncedFetch = useCallback(
@@ -29,6 +30,34 @@ export default function EditAnimationsPage() {
     }, 500),
     []
   );
+
+  const fetchCategories = async () => {
+  
+      try {
+        let url = "/api/v1/animation/categories";
+  
+       
+  
+        const res = await fetch(url);
+  
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || "Failed to fetch animations");
+        }
+  
+        const data = await res.json();
+        const categoriesList = data.animations || data;
+        setCategories(categoriesList)
+      } catch (err: any) {
+        
+        toast.error(err.message || "Failed to load animations");
+      } 
+    };
+  
+    // Initial load
+    useEffect(() => {
+      fetchCategories();
+    }, []);
 
   const fetchAnimations = async (filter: string = "") => {
     setLoading(true);
@@ -115,7 +144,7 @@ export default function EditAnimationsPage() {
       {/* Loading Skeleton */}
       {loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {[...Array(8)].map((_, i) => (
+          {[...Array(5)].map((_, i) => (
             <div
               key={i}
               className="rounded-xl border bg-card animate-pulse h-80"
@@ -158,6 +187,7 @@ export default function EditAnimationsPage() {
           {animations.map((animation,index) => (
             <AnimationCard
               key={index}
+              categories={categories}
               animation={animation}
               onUpdate={() => fetchAnimations(categoryFilter)}
               onDelete={() => fetchAnimations(categoryFilter)}

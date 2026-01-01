@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Pencil, Trash2, X, Check } from "lucide-react";
 import { toast } from "react-toastify";
 import BinAndImageUploader from "./createAnimation";
+import { DataList } from "@/components/ui/dataList";
 
 type Animation = {
   _id: string;
@@ -19,12 +20,14 @@ type Animation = {
 
 type AnimationCardProps = {
   animation: Animation;
+  categories:{ value: string, label: string }[];
   onUpdate?: () => void; // refresh list after edit
   onDelete?: () => void;  // refresh list after delete
 };
 
 export default function AnimationCard({
   animation,
+  categories,
   onUpdate,
   onDelete,
 }: AnimationCardProps) {
@@ -32,7 +35,7 @@ export default function AnimationCard({
   const [editName, setEditName] = useState(animation.name);
   const [editCategory, setEditCategory] = useState(animation.category);
   const [editImageUrl, setEditImageUrl] = useState(animation.imageUrl);
-  const [newBinData, setNewBinData] = useState<{ url: string } | null>(null);
+  const [newBinData, setNewBinData] = useState<{ url: string } | null>({url:animation.link});
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -50,7 +53,7 @@ export default function AnimationCard({
     setEditName(animation.name);
     setEditCategory(animation.category);
     setEditImageUrl(animation.imageUrl);
-    setNewBinData(null);
+    setNewBinData({url:animation.link});
   };
 
   const cancelEditing = () => {
@@ -70,10 +73,11 @@ export default function AnimationCard({
       name: editName.trim(),
       category: editCategory.trim(),
       imageUrl: editImageUrl,
+      link : newBinData?.url
     };
 
     if (newBinData) {
-      payload.link = new URL(newBinData.url).pathname;
+      payload.link = newBinData.url
     }
 
     try {
@@ -200,24 +204,31 @@ export default function AnimationCard({
             </div>
             <div className="space-y-2">
               <Label htmlFor={`category-${animation._id}`}>Category</Label>
-              <Input
+              {/* <Input
                 id={`category-${animation._id}`}
                 value={editCategory}
                 onChange={(e) => setEditCategory(e.target.value)}
                 placeholder="e.g. idle"
                 disabled={isSaving}
-              />
+              /> */}
+              <DataList
+                          options={categories}
+                          value={editCategory}
+                          onValueChange={setEditCategory}
+                          placeholder="Select category or type a new one..."
+                        />
             </div>
           </div>
 
           <div className="space-y-3">
             <p className="text-sm font-medium">Update Preview Image (optional)</p>
             <BinAndImageUploader
+            initialBinUrl={newBinData?.url}
               initialImageUrl={editImageUrl}
               onImageUpload={handleImageUpload}
               onBinUpload={handleBinUpload}
             />
-            {editImageUrl && (
+            {/* {editImageUrl && (
               <div className="flex justify-center mt-4">
                 <Image
                   src={editImageUrl}
@@ -227,7 +238,7 @@ export default function AnimationCard({
                   className="rounded-lg border shadow-sm"
                 />
               </div>
-            )}
+            )} */}
           </div>
 
           {newBinData && (

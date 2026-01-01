@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import BinAndImageUploader from "@/components/dashboard/animation/createAnimation";
+import { DataList } from "@/components/ui/dataList";
 
 type AnimationBin = {
   name: string;
@@ -16,9 +17,39 @@ type AnimationBin = {
 export default function CreateAnimationPage() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
+  const [categories,setCategories] = useState<{ value: string, label: string }[]>([{ value: "", label: "None" }])
   const [binData, setBinData] = useState<AnimationBin | null>(null);
   const [imageUrl, setImageUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+  const fetchCategories = async () => {
+  
+      try {
+        let url = "/api/v1/animation/categories";
+  
+       
+  
+        const res = await fetch(url);
+  
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || "Failed to fetch animations");
+        }
+  
+        const data = await res.json();
+        const categoriesList = data.animations || data;
+        setCategories(categoriesList)
+      } catch (err: any) {
+        
+        toast.error(err.message || "Failed to load animations");
+      } 
+    };
+  
+    // Initial load
+    useEffect(() => {
+      fetchCategories();
+    }, []);
 
   const handleBinUpload = (bin: AnimationBin) => {
     setBinData(bin);
@@ -106,12 +137,11 @@ export default function CreateAnimationPage() {
         {/* Category - Now a text input */}
         <div className="space-y-2">
           <Label htmlFor="category">Category</Label>
-          <Input
-            id="category"
-            placeholder="e.g. idle, walk, dance, happy"
+          <DataList
+            options={categories}
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            disabled={isSubmitting}
+            onValueChange={setCategory}
+            placeholder="Select category or type a new one..."
           />
           <p className="text-sm text-muted-foreground">
             Enter one category (lowercase recommended)

@@ -15,6 +15,7 @@ type AnimationBin = {
 type BinAndImageUploaderProps = {
   /** Initial image URL (optional, for editing forms) */
   initialImageUrl?: string;
+  initialBinUrl?:string;
   /** Callback when image is uploaded */
   onImageUpload?: (url: string) => void;
   /** Callback when .bin is uploaded */
@@ -25,13 +26,14 @@ type BinAndImageUploaderProps = {
 
 export default function BinAndImageUploader({
   initialImageUrl = "",
+  initialBinUrl = "",
   onImageUpload,
   onBinUpload,
   className = "",
 }: BinAndImageUploaderProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [imageUrl, setImageUrl] = useState<string>(initialImageUrl);
-  const [animationBin, setAnimationBin] = useState<AnimationBin | null>(null);
+  const [animationBin, setAnimationBin] = useState<AnimationBin | null>({name:"",url:initialBinUrl,size:0});
 
   const { startUpload, isUploading } = useUploadThing("binUploader", {
     onClientUploadComplete: (res) => {
@@ -43,7 +45,7 @@ export default function BinAndImageUploader({
         url: file.ufsUrl,
         size: file.size,
       };
-
+      console.log(binData)
       setAnimationBin(binData);
       onBinUpload?.(binData);
       toast.success("Animation uploaded successfully 🎉");
@@ -128,7 +130,7 @@ export default function BinAndImageUploader({
       )}
 
       {/* Uploaded BIN display */}
-      {animationBin && (
+      {animationBin && animationBin.url && (
         <div className="border rounded-lg p-4 bg-gray-50">
           <p className="font-semibold text-gray-700">Uploaded animation</p>
           <p className="text-sm text-gray-600">{animationBin.name}</p>
@@ -147,14 +149,14 @@ export default function BinAndImageUploader({
       )}
 
       {/* ================= IMAGE UPLOAD ================= */}
-      <div className="bg-blue-500 rounded-xl shadow p-6 space-y-4 hover:bg-blue-600 transition cursor-pointer">
-        <label className="block text-sm font-semibold text-white">
+      <div className="bg-foreground  rounded-xl shadow p-6 space-y-4  transition ">
+        <label className="block text-sm font-semibold text-background">
           Image à la une
         </label>
 
         <UploadButton
           endpoint="imageUploader"
-          className="ut-button:bg-green-600 ut-button:hover:bg-green-700 ut-button:text-white"
+          className="ut-button:bg-primary/80 ut-button:hover:bg-primary ut-button:text-white "
           onClientUploadComplete={handleImageUpload}
           onUploadError={(error: Error) => {
             toast.error(`ERROR! ${error.message}`);

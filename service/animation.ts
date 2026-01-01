@@ -41,6 +41,21 @@ export async function getAnimations(category?: string) {
     return [];
   }
 }
+export async function getCategories() {
+  await dbConnect();
+
+  try {
+    const categories = await Animation.distinct("category");
+
+    return categories.map((cat: string) => ({
+      value: cat,
+      label: cat
+    }));
+  } catch (error) {
+    return [];
+  }
+}
+
 
 /**
  * Get animation by ID
