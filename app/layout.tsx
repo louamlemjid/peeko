@@ -34,7 +34,9 @@ export default function RootLayout({
           <header className="flex items-center gap-4">
               <Navigation />
             </header>
-        {children}
+        <div className="mt-16">
+          {children}
+        </div>
         <ToastContainer
               position="top-right"
               autoClose={3000}

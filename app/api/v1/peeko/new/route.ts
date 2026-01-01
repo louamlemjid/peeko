@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error("Failed to create Peeko:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Internal Server Error" },
+      { success: false, error: error || "Internal Server Error" },
       { status: 500 }
     );
   }

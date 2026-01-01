@@ -10,10 +10,10 @@ export default function Page() {
       alignItems: 'center',     // Centers vertically
       minHeight: '100vh',       // Ensures the container takes full viewport height
       width: '100vw',           // Ensures the container takes full viewport width
-      backgroundColor: '#f0f2f5' // Optional: a light background for better visibility
+      
     }}>
       <SignIn 
-      fallbackRedirectUrl={"/"}
+      fallbackRedirectUrl={"/user"}
        />
     </div>
   );

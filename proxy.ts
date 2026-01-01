@@ -11,6 +11,7 @@ const isProtectedDashboardRoute = createRouteMatcher(['/dashboard(.*)']);
 
 // Match the protected API routes
 // const isProtectedAPIRoute = createRouteMatcher(['/api/v1(.*)']);
+const isProtectedUserRoute = createRouteMatcher(['/user(.*)']);
 
 export default clerkMiddleware(async (auth, request: NextRequest,) => {
 
@@ -24,6 +25,15 @@ export default clerkMiddleware(async (auth, request: NextRequest,) => {
     if (sessionClaims?.metadata?.role !== 'admin') {
       return NextResponse.redirect(new URL('/', request.url));
     }
+
+    
+  }
+
+  if (isProtectedUserRoute(request)) {
+    if (!userId) {
+      return NextResponse.redirect(new URL('/auth/sign-in', request.url));
+    }
+   
 
     
   }
@@ -43,5 +53,5 @@ export default clerkMiddleware(async (auth, request: NextRequest,) => {
 
 // ✅ Tell Next.js which routes to apply middleware to
 export const config = {
-  matcher: ['/dashboard/:path*'],
+  matcher: ['/dashboard/:path*','/user/:path*'],
 };

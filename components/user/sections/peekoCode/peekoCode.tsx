@@ -29,7 +29,7 @@ const PeekoCode: React.FC<PeekoCodeProps> = ({
   };
 
   return (
-    <div className={`relative max-w-md  ${className}`}>
+    <div className={`relative max-w-md m-auto ${className}`}>
       {label && (
         <p className="text-sm text-gray-600 mb-2 text-center">{label}</p>
       )}

@@ -51,7 +51,7 @@ export default function Navigation() {
           {/* Logo */}
           
             <Link href="/" className="flex items-center gap-2 ">
-              <div className="relative w-32 aspect-[3/1] "> 
+              <div className="relative w-32 aspect-[3/1] rounded-3xl"> 
         <Image
           src="/peeko.jpg"
               alt="Logo"
