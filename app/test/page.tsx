@@ -19,7 +19,7 @@ export async function dropUnique() {
 
   try {
     await dbConnect();
-    const dropped = await User.collection.dropIndex("username_1");
+    const dropped = await User.collection.dropIndex("phoneNumber_1");
     console.log("Dropped index:", dropped);
   } catch (error) {
     console.error("Drop index error:", error);

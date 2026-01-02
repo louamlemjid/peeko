@@ -73,10 +73,10 @@ const UserSchema = new Schema<IUser>(
     /* ===== Phone ===== */
     phoneNumber: {
       type: String,
-      required: false,
-      unique: true,
-      index: true,
+      trim: true,
+      default: undefined, // VERY IMPORTANT
     },
+
 
     phoneVerified: {
       type: Boolean,
