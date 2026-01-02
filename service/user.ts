@@ -91,11 +91,20 @@ export async function addAnimationSet(clerkId: string,animationSetId:string) :Pr
   try {
     const user = await User.findOneAndUpdate({clerkId}, {
       $addToSet: { animationsSets: animationSetId } 
-    });
+    }, { new: true });
     console.log(user)
   return user ? JSON.parse(JSON.stringify(user)) : null;
   } catch (error) {
     console.error("service/user: ",error);
     return null
+  }
+}
+export async function dropUniue() {
+  try {
+    await dbConnect();
+    const dropped = await User.collection.dropIndex("username_1");
+    console.log("dropped: ",dropped)
+  } catch (error) {
+    console.log("error: ",error)
   }
 }

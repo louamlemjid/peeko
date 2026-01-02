@@ -104,7 +104,7 @@ export async function pickAnimationsSet(peekoCode: string, animationSetId : stri
   try {
     const peeko = await Peeko.findOneAndUpdate({code:peekoCode}, {
       animationSet: animationSetId
-    }).lean();
+    }, { new: true }).lean();
 
   if (!peeko) throw new Error("Peeko not found");
   return JSON.parse(JSON.stringify(peeko));
