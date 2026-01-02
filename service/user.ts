@@ -90,7 +90,7 @@ export async function addAnimationSet(clerkId: string,animationSetId:string) :Pr
 
   try {
     const user = await User.findOneAndUpdate({clerkId}, {
-      $addToSet: { animationsSets: animationSetId } 
+      $addToSet: { animationSets: animationSetId } 
     }, { new: true });
     console.log(user)
   return user ? JSON.parse(JSON.stringify(user)) : null;
@@ -106,5 +106,20 @@ export async function dropUniue() {
     console.log("dropped: ",dropped)
   } catch (error) {
     console.log("error: ",error)
+  }
+}
+
+export async function getAnimationSet(clerkId: string) :Promise<IUser["animationSets"]|null> {
+  await dbConnect();
+
+  try {
+    const userAnimationSets = await User.findOne({clerkId})
+    .populate("animationSets")
+    .lean()
+    console.log(userAnimationSets)
+  return userAnimationSets ? JSON.parse(JSON.stringify(userAnimationSets)) : null;
+  } catch (error) {
+    console.error("service/user: ",error);
+    return null
   }
 }

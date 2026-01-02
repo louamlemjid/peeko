@@ -1,6 +1,8 @@
 import dbConnect from "@/lib/mongoDB";
 import { AnimationSet, IAnimationSet } from "@/model/animationSet";
 import { Peeko } from "@/model/peeko";
+import "@/model/animation"; // 👈 force model registration
+
 
 /**
  * Create an Animation Set

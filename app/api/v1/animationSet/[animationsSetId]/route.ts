@@ -2,6 +2,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/mongoDB";
 import { AnimationSet } from "@/model/animationSet";
+import "@/model/animation"; // 👈 force model registration
+
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ animationsSetId: string }> }) {
  
