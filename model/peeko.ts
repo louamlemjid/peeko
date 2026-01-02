@@ -3,6 +3,7 @@
 
 import  { Schema,  model, models } from "mongoose";
 import { IUser } from "./user";
+import { IAnimationSet } from "./animationSet";
 export enum PeekoMood {
   HAPPY = "HAPPY",
   ANGRY = "ANGRY",
@@ -17,6 +18,7 @@ export interface IPeeko {
   peekoName?: string;     // optional, user can rename later
   mood: PeekoMood;
   user: string | IUser;
+  animationSet?: string | IAnimationSet;
   createdAt: Date;        // timestamp
   updatedAt:Date;
 }
@@ -41,12 +43,19 @@ const PeekoSchema = new Schema<IPeeko>(
       enum: Object.values(PeekoMood),
       default: PeekoMood.DEFAULT,
     },
+
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      unique: true, // enforces 1–1 relation
+      unique: true, 
     },
+    
+    animationSet: {
+      type: Schema.Types.ObjectId,
+      ref: "AnimationSet",
+      
+    }
   },
   {
     timestamps: { createdAt: true, updatedAt: true }, 

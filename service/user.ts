@@ -84,3 +84,18 @@ console.log(user)
     return null
   }
 }
+
+export async function addAnimationSet(clerkId: string,animationSetId:string) :Promise<IUser|null> {
+  await dbConnect();
+
+  try {
+    const user = await User.findOneAndUpdate({clerkId}, {
+      $addToSet: { animationsSets: animationSetId } 
+    });
+    console.log(user)
+  return user ? JSON.parse(JSON.stringify(user)) : null;
+  } catch (error) {
+    console.error("service/user: ",error);
+    return null
+  }
+}

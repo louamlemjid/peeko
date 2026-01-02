@@ -97,3 +97,19 @@ export async function updatePeekoName(peekoCode: string, peekoName: string) {
     throw new Error("Failed to update name : "+error)
   }
 }
+
+export async function pickAnimationsSet(peekoCode: string, animationSetId : string) {
+  await dbConnect();
+
+  try {
+    const peeko = await Peeko.findOneAndUpdate({code:peekoCode}, {
+      animationSet: animationSetId
+    }).lean();
+
+  if (!peeko) throw new Error("Peeko not found");
+  return JSON.parse(JSON.stringify(peeko));
+  } catch (error) {
+    throw new Error("Failed to update name : "+error)
+  }
+}
+

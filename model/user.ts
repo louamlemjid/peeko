@@ -1,5 +1,6 @@
 import mongoose, { Schema, model, models } from "mongoose";
 import { IPeeko } from "./peeko";
+import { IAnimationSet } from "./animationSet";
 
 export interface IUser {
   _id: string;
@@ -26,6 +27,7 @@ export interface IUser {
   friends: string[] | IUser[];
   pendingFriendRequests: string[] | IUser[];
   peeko:string | IPeeko;
+  animationSets:string[] | IAnimationSet[];
 
   /* Timestamps */
   createdAt: Date;
@@ -113,6 +115,13 @@ const UserSchema = new Schema<IUser>(
       unique: true,
       sparse: true,
     },
+    animationSets: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "AnimationSet",
+        default: [],
+      },
+    ]
   },
   {
     timestamps: true,

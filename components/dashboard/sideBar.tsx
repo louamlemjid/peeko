@@ -28,14 +28,14 @@ export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [focus, setFocus] = useState('');
   const [animationsOpen, setAnimationsOpen] = useState(false);
-  const [blogOpen, setBlogOpen] = useState(false);
+  const [animationSetOpen, setAnimationSetOpen] = useState(false);
   const [serviceOpen, setServiceOpen] = useState(false);
   const [zoneOpen,setZoneOpen] = useState(false)
 
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: Home },
     { href: '/dashboard/animation', label: 'Animations', icon: Dog },
-    { href: '/dashboard/blog', label: 'Blogs', icon: Users },
+    { href: '/dashboard/animationSet', label: 'AnimationSet', icon: Users },
     { href: '/dashboard/service', label: 'Services', icon: HandPlatter },
     { href: '/dashboard/zonesDesservies', label: 'zonesDesservies', icon: MapPin },
   ];
@@ -46,8 +46,8 @@ export default function Sidebar() {
   ];
 
   const blogSubItems = [
-    { href: '/dashboard/blog/editBlog', label: 'Gerer blogs', icon: Pencil },
-    { href: '/dashboard/blog/createBlog', label: 'Ajouter articles', icon: PlusCircle },
+    { href: '/dashboard/animationSet/editAnimationSet', label: 'Gerer AnimationSet', icon: Pencil },
+    { href: '/dashboard/animationSet/createAnimationSet', label: 'Ajouter AnimationSet', icon: PlusCircle },
   ];
 
   const serviceSubItems = [
@@ -99,7 +99,7 @@ export default function Sidebar() {
                       e.preventDefault();
                       if (isCollapsed) setIsCollapsed(false);
                       setAnimationsOpen(!animationsOpen);
-                      setBlogOpen(false);
+                      setAnimationSetOpen(false);
                       setServiceOpen(false)
                       setZoneOpen(false)
                       setFocus(''); // clear focus when toggling parent
@@ -156,7 +156,7 @@ export default function Sidebar() {
                     onClick={(e) => {
                       e.preventDefault();
                       if (isCollapsed) setIsCollapsed(false);
-                      setBlogOpen(!blogOpen);
+                      setAnimationSetOpen(!animationSetOpen);
                       setAnimationsOpen(false);
                       setServiceOpen(false)
                       setZoneOpen(false)
@@ -164,7 +164,7 @@ export default function Sidebar() {
                     }}
                     className={`w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-gradient-to-r from-sky-300 to-purple-300 transition
                     ${
-                      blogOpen && !focus.startsWith('/dashboard/blog/')
+                      animationSetOpen && !focus.startsWith('/dashboard/blog/')
                         ? 'bg-gradient-to-r from-purple-300 to-sky-300 text-white shadow-3xl'
                         : ''
                     }`}
@@ -174,7 +174,7 @@ export default function Sidebar() {
                       {!isCollapsed && <span>{item.label}</span>}
                     </div>
                     {!isCollapsed && (
-                      blogOpen ? (
+                      animationSetOpen ? (
                         <ChevronDown className="w-4 h-4" />
                       ) : (
                         <ChevronRight className="w-4 h-4" />
@@ -183,7 +183,7 @@ export default function Sidebar() {
                   </button>
 
                   {/* Submenu */}
-                  {blogOpen && !isCollapsed && (
+                  {animationSetOpen && !isCollapsed && (
                     <div className="ml-8 mt-1 flex flex-col gap-1">
                       {blogSubItems.map((sub) => (
                         <Link
@@ -216,7 +216,7 @@ export default function Sidebar() {
                       if (isCollapsed) setIsCollapsed(false);
                       setServiceOpen(!serviceOpen);
                       setAnimationsOpen(false);
-                      setBlogOpen(false)
+                      setAnimationSetOpen(false)
                       setZoneOpen(false)
                       setFocus(''); // clear focus when toggling parent
                     }}
@@ -275,7 +275,7 @@ export default function Sidebar() {
                       setZoneOpen(!zoneOpen);
                       setServiceOpen(false)
                       setAnimationsOpen(false);
-                      setBlogOpen(false)
+                      setAnimationSetOpen(false)
                       setFocus(''); // clear focus when toggling parent
                     }}
                     className={`w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-gradient-to-r from-sky-300 to-purple-300 transition
@@ -333,7 +333,7 @@ export default function Sidebar() {
                   onClick={() => {
                     setFocus(item.href);
                     setAnimationsOpen(false);
-                    setBlogOpen(false);
+                    setAnimationSetOpen(false);
                   }}
                   title={isCollapsed ? item.label : undefined}
                 >

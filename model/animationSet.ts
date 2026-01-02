@@ -9,11 +9,9 @@ export interface IAnimationSet {
   category: string;        // idle | emotion | custom
   animations: (string | IAnimation)[];
 
-  peekoCode?: string;      // assign to specific Peeko
-  peeko?: string | IPeeko;
-
-  isActive: boolean;
-
+  paid:boolean;
+  price:number;
+  
   createdAt: Date;
   updatedAt: Date;
 }
@@ -40,21 +38,15 @@ const AnimationSetSchema = new Schema<IAnimationSet>(
       },
     ],
 
-    peekoCode: {
-      type: String,
-      index: true,
+    paid:{
+      type:Boolean,
+      default:false
     },
 
-    peeko: {
-      type: Schema.Types.ObjectId,
-      ref: "Peeko",
-      sparse: true,
-    },
+    price: { 
+      type: Number,
+      default: 0 },
 
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
   },
   { timestamps: true }
 );
