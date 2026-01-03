@@ -1,7 +1,8 @@
 import crypto from "crypto";
 import { IUser, User } from "@/model/user";
 import "@/model/peeko"; 
-
+import '@/model/animationSet';
+import '@/model/animation';
 import dbConnect from '@/lib/mongoDB'; 
 
 /* ===== Generate unique user code ===== */
@@ -109,17 +110,25 @@ export async function dropUniue() {
   }
 }
 
-export async function getAnimationSet(clerkId: string) :Promise<IUser["animationSets"]|null> {
+export async function getAnimationSet(
+  clerkId: string
+): Promise<IUser['animationSets'] | null> {
   await dbConnect();
 
   try {
-    const userAnimationSets = await User.findOne({clerkId})
-    .populate("animationSets")
-    .lean()
-    console.log(userAnimationSets)
-  return userAnimationSets ? JSON.parse(JSON.stringify(userAnimationSets)) : null;
+    const user = await User.findOne({ clerkId })
+      .populate({
+        path: 'animationSets',
+        populate: {
+          path: 'animations',
+          model: 'Animation', // optional but recommended
+        },
+      })
+      .lean();
+
+    return user ? (user.animationSets as IUser['animationSets']) : null;
   } catch (error) {
-    console.error("service/user: ",error);
-    return null
+    console.error('service/user:', error);
+    return null;
   }
 }

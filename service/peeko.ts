@@ -55,14 +55,27 @@ export async function getPeekoByCode(peekoCode: string) {
 
   try {
     const peeko = await Peeko.findOne({ code: peekoCode })
-    .populate("user","firstName lastName")
-    .lean();
+      .populate({
+        path: 'user',
+        select: 'firstName lastName',
+      })
+      .populate({
+        path: 'animationSet',
+        populate: {
+          path: 'animations',
+          model: 'Animation',
+        },
+      })
+      .lean();
 
-  return JSON.parse(JSON.stringify(peeko));
+    return peeko ? JSON.parse(JSON.stringify(peeko)): null;
   } catch (error) {
-    return null
+    console.error('getPeekoByCode:', error);
+    return null;
   }
 }
+
+
 
 export async function toggleMood(peekoCode: string, mood: string) {
   await dbConnect();
@@ -102,6 +115,7 @@ export async function pickAnimationsSet(peekoCode: string, animationSetId : stri
   await dbConnect();
 
   try {
+    console.log("peeko service:",peekoCode,animationSetId)
     const peeko = await Peeko.findOneAndUpdate({code:peekoCode}, {
       animationSet: animationSetId
     }, { new: true }).lean();
@@ -113,3 +127,18 @@ export async function pickAnimationsSet(peekoCode: string, animationSetId : stri
   }
 }
 
+export async function getAnimationsSet(peekoCode: string) {
+  await dbConnect();
+
+  try {
+    console.log("peeko service:",peekoCode)
+    const peekoAnimationSet = await Peeko.findOne({code:peekoCode})
+    .populate("animationSet")
+    .lean();
+
+  if (!peekoAnimationSet) throw new Error("Peeko not found");
+  return JSON.parse(JSON.stringify(peekoAnimationSet));
+  } catch (error) {
+    throw new Error("Failed to get animation set : "+error)
+  }
+}
