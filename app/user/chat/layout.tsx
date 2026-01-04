@@ -16,7 +16,7 @@ export default function RootLayout({
    <div className="">
       {/* Main content area - takes available space */}
       <main className="">{children}</main>
-        <BottomNav/>
+       
     </div>
   );
 }

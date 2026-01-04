@@ -61,7 +61,7 @@ export default function UserPage() {
       <PeekoMoodSection peekoCode={userCode} initialMood={peeko ? peeko.mood : PeekoMood.DEFAULT} />
       </div>
       <Slider/>
-      <Chat/>
+     
     </div>
   );
 }

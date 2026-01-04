@@ -10,7 +10,7 @@ interface MessageCardProps {
   /** Message status: 'sent' = single check, 'delivered' = double check, 'read' = double check blue */
   status?: 'sent' | 'delivered' | 'read';
   /** Optional timestamp */
-  timestamp?: string;
+  timestamp?: Date;
 }
 
 const MessageCard: React.FC<MessageCardProps> = ({
@@ -33,7 +33,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
         <p className="text-sm leading-relaxed">{text}</p>
 
         <div className="flex items-center justify-end gap-1 mt-1">
-          <span className="text-xs opacity-70">{timestamp}</span>
+          <span className="text-xs opacity-70">{timestamp.toLocaleString()}</span>
           {isMine && (
             <>
               {status === 'sent' ? (
