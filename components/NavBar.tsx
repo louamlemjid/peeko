@@ -93,7 +93,7 @@ export default function Navigation() {
             className="flex items-center gap-4"
           >
             <Link
-              href="/cart"
+              href="/user"
               className="text-muted-foreground hover:text-gold transition-colors duration-200"
               aria-label="View cart"
             >

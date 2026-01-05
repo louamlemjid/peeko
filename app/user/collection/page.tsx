@@ -31,6 +31,7 @@ export default function UserAnimationSetsPage() {
   const { user } = useUserAuth(clerkId);
 
   const [sets, setSets] = useState<AnimationSet[]>([]);
+  const [peekoInUse,setPeekoInUse] = useState("")
   const [loading, setLoading] = useState(true);
   const [addingSetId, setAddingSetId] = useState<string | null>(null);
 
@@ -41,6 +42,18 @@ export default function UserAnimationSetsPage() {
     
     setLoading(true);
     try {
+      if(user){
+        const peekoRes = await fetch("/api/v1/peeko/"+user.userCode)
+        
+        if(!peekoRes.ok){
+          toast.error("Failed to get Peeko !")
+        }
+
+        const peekoData = await peekoRes.json();
+        if(peekoData.peeko && peekoData.peeko.animationSet)
+        setPeekoInUse(peekoData.peeko.animationSet._id);
+      }
+      
       const res = await fetch("/api/v1/user/addAnimationSet/"+clerkId);
       if (!res.ok) throw new Error("Failed to load animation sets");
       const data = await res.json();
@@ -54,7 +67,7 @@ export default function UserAnimationSetsPage() {
 
   useEffect(() => {
     fetchSets();
-  }, [user]);
+  }, [user,addingSetId]);
 
   const handlePickSet = async (setId: string) => {
     if (!isLoaded || !user) {
@@ -97,7 +110,7 @@ export default function UserAnimationSetsPage() {
   return (
     <div className="max-w-7xl mx-auto py-12 px-6">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Animation Sets Gallery</h1>
+        <h1 className="text-4xl font-bold mb-4">Collection</h1>
         <p className="text-xl text-muted-foreground">
           Browse and add animation packs to your collection
         </p>
@@ -175,7 +188,7 @@ export default function UserAnimationSetsPage() {
                       <p className="text-2xl font-semibold text-green-600">Free</p>
                     )}
                   </div>
-
+                  {set._id !== peekoInUse ? 
                   <Button
                     size="lg"
                     className="w-full"
@@ -190,7 +203,10 @@ export default function UserAnimationSetsPage() {
                     ) : (
                       "Use Set"
                     )}
-                  </Button>
+                  </Button> :
+                  <Button variant="secondary" size="lg" className="w-full" disabled>Current Set</Button>
+                  }
+                  
                 </div>
               </div>
             </div>
