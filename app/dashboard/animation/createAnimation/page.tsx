@@ -80,7 +80,7 @@ export default function CreateAnimationPage() {
 
     setIsSubmitting(true);
 
-    const link = new URL(binData.url).pathname;
+    const link = binData.url;
 
     const payload = {
       name: name.trim(),
