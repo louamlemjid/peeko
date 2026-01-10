@@ -10,7 +10,7 @@ export default function Home() {
       {/* <nav>...</nav> */}
 
       {/* Hero Section */}
-      <div className="relative pt-28 pb-20 md:pt-40 md:pb-32 px-5 sm:px-8 md:px-12 lg:px-20">
+      <div className="relative  pb-20 md:pt-40 md:pb-32 px-5 sm:px-8 md:px-12 lg:px-20">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-center">
             {/* Left - Text + Features + CTAs */}
