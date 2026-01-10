@@ -1,4 +1,5 @@
-import { Schema, model, models, Document } from 'mongoose';
+import { Schema, model, models, Document, Types } from 'mongoose';
+import { IUser } from './user';
 
 export type MessageSourceType = 'USER' | 'ADMIN' | 'SYSTEM';
 
@@ -6,8 +7,10 @@ export interface IMessage  {
   _id: string;
 
   destination: string; // userCode
-  source: string;      
+  userDestination:string | IUser;
 
+  source: string;      
+  userSource:string | IUser;
   sourceType: MessageSourceType;
 
   opened: boolean;
@@ -27,13 +30,20 @@ const MessageSchema = new Schema<IMessage>(
       required: true,
       index: true,
     },
+    userDestination:{
+      type: Types.ObjectId,
+      ref:"User",
+    },
 
     source: {
       type: String,
       required: true,
       index: true,
     },
-
+    userSource:{
+      type:Types.ObjectId,
+      ref:"User"
+    },
     sourceType: {
       type: String,
       enum: ['USER', 'ADMIN', 'SYSTEM'],

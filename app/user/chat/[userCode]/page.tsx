@@ -68,8 +68,14 @@ console.log(currentUserCode)
         setLoading(false);
       }
     };
-
     fetchChatData();
+  //   const interval = setInterval(() => {
+  //   fetchChatData();
+  // }, 10_000); // 10 seconds
+
+  // return () => clearInterval(interval);
+
+    
   }, [userCode, currentUserCode, authLoading]);
 
   if (authLoading || loading) {

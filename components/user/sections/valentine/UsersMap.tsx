@@ -7,6 +7,13 @@ import { useUserAuth } from '@/hooks/userAuth'; // adjust path
 import { formatDistanceToNow } from 'date-fns';
 import { IMessage } from '@/model/message';
 import { useUser } from '@clerk/nextjs';
+import { IUser } from "@/model/user";
+
+function isUserPopulated(
+  user: string | IUser
+): user is IUser {
+  return typeof user === "object" && user !== null && "firstName" in user;
+}
 
 
 
@@ -52,49 +59,74 @@ const UsersMap: React.FC = () => {
           throw new Error(data.error || 'No messages found');
         }
 
-        const messages: IMessage[] = data.messages;
+       const messages: IMessage[] = data.messages;
 
-        // Group by source (sender)
-        const grouped = new Map<string, IMessage[]>();
+// Group by conversation partner
+const grouped = new Map<string, IMessage[]>();
 
-        messages.forEach((msg) => {
-          if (msg.sourceType !== 'USER') return; // Skip admin/system if desired
-          if (!grouped.has(msg.source)) {
-            grouped.set(msg.source, []);
-          }
-          grouped.get(msg.source)!.push(msg);
-        });
+messages.forEach((msg) => {
+  const partnerCode =
+    msg.source === currentUserCode ? msg.destination : msg.source;
 
-        // Build conversation list
-        const convos: ConversationPartner[] = [];
+  if (!grouped.has(partnerCode)) {
+    grouped.set(partnerCode, []);
+  }
 
-        for (const [userCode, msgs] of grouped) {
-          // Sort messages newest first
-          msgs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  grouped.get(partnerCode)!.push(msg);
+});
 
-          const latestMsg = msgs[0];
-          const unreadCount = msgs.filter((m) => !m.opened).length;
+const convos: ConversationPartner[] = [];
 
-          // TODO: Fetch real user info (name, avatar, online) via /api/v1/user/[userCode]
-          // For now, we'll mock or use fallback
-          const mockName = userCode; // Replace with real name when you fetch user
-          const avatarLetters = userCode.slice(0, 2).toUpperCase();
+for (const [partnerCode, msgs] of grouped) {
+  // Sort messages newest first
+  msgs.sort(
+    (a, b) =>
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime()
+  );
 
-          convos.push({
-            userCode,
-            name: mockName,
-            avatarLetters,
-            lastMessage: latestMsg.content,
-            timestamp: new Date(latestMsg.createdAt),
-            online: false, // Replace with real online status later
-            unreadCount,
-          });
-        }
+  const latestMsg = msgs[0];
 
-        // Sort conversations by latest message
-        convos.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+  const rawPartner =
+  latestMsg.source === currentUserCode
+    ? latestMsg.userDestination
+    : latestMsg.userSource;
 
-        setConversations(convos);
+const partnerUser = isUserPopulated(rawPartner)
+  ? rawPartner
+  : null;
+
+
+  // Count unread messages RECEIVED by current user
+  const unreadCount = msgs.filter(
+    (m) =>
+      m.destination === currentUserCode &&
+      !m.opened
+  ).length;
+
+ convos.push({
+  userCode: partnerCode,
+  name: partnerUser
+    ? `${partnerUser.firstName} ${partnerUser.lastName}`
+    : partnerCode,
+  avatarLetters: partnerUser
+    ? `${partnerUser.firstName[0]}${partnerUser.lastName[0]}`.toUpperCase()
+    : partnerCode.slice(0, 2).toUpperCase(),
+  lastMessage: latestMsg.content,
+  timestamp: new Date(latestMsg.createdAt),
+  online: false,
+  unreadCount,
+});
+
+}
+
+// Sort conversations by last activity
+convos.sort(
+  (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
+);
+
+setConversations(convos);
+
       } catch (err: any) {
         console.error(err);
         setError(err.message);

@@ -49,10 +49,10 @@ const Chat: React.FC<ChatProps> = ({
     setMessages(converted);
   }, [initialMessages, currentUserCode]);
 
-  // Auto-scroll to bottom when new messages
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  // // Auto-scroll to bottom when new messages
+  // useEffect(() => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // }, [messages]);
 
   const handleSend = async () => {
   if (!inputText.trim()) return;
