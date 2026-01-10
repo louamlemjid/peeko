@@ -1,11 +1,20 @@
-import { Heart, MessageCircle, Sparkles } from "lucide-react";
+import { Heart, Home, MessageCircle, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 export default function BottomNav() {
     return(
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-10">
         <div className="max-w-screen-xl mx-auto">
           <div className="flex justify-around items-center h-16">
+            {/* Message / Chat */}
+            <Link
+              href="/user"
+              className="flex flex-col items-center justify-center w-full h-full text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <Home size={24} strokeWidth={2} />
+              <span className="text-xs mt-1">Home</span>
+            </Link>
+
             {/* Message / Chat */}
             <Link
               href="/user/chat"

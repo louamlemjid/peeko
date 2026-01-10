@@ -61,71 +61,71 @@ const UsersMap: React.FC = () => {
 
        const messages: IMessage[] = data.messages;
 
-// Group by conversation partner
-const grouped = new Map<string, IMessage[]>();
+        // Group by conversation partner
+        const grouped = new Map<string, IMessage[]>();
 
-messages.forEach((msg) => {
-  const partnerCode =
-    msg.source === currentUserCode ? msg.destination : msg.source;
+        messages.forEach((msg) => {
+          const partnerCode =
+            msg.source === currentUserCode ? msg.destination : msg.source;
 
-  if (!grouped.has(partnerCode)) {
-    grouped.set(partnerCode, []);
-  }
+          if (!grouped.has(partnerCode)) {
+            grouped.set(partnerCode, []);
+          }
 
-  grouped.get(partnerCode)!.push(msg);
-});
+          grouped.get(partnerCode)!.push(msg);
+        });
 
-const convos: ConversationPartner[] = [];
+        const convos: ConversationPartner[] = [];
 
-for (const [partnerCode, msgs] of grouped) {
-  // Sort messages newest first
-  msgs.sort(
-    (a, b) =>
-      new Date(b.createdAt).getTime() -
-      new Date(a.createdAt).getTime()
-  );
+        for (const [partnerCode, msgs] of grouped) {
+          // Sort messages newest first
+          msgs.sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() -
+              new Date(a.createdAt).getTime()
+          );
 
-  const latestMsg = msgs[0];
+          const latestMsg = msgs[0];
 
-  const rawPartner =
-  latestMsg.source === currentUserCode
-    ? latestMsg.userDestination
-    : latestMsg.userSource;
+          const rawPartner =
+          latestMsg.source === currentUserCode
+            ? latestMsg.userDestination
+            : latestMsg.userSource;
 
-const partnerUser = isUserPopulated(rawPartner)
-  ? rawPartner
-  : null;
+        const partnerUser = isUserPopulated(rawPartner)
+          ? rawPartner
+          : null;
 
 
-  // Count unread messages RECEIVED by current user
-  const unreadCount = msgs.filter(
-    (m) =>
-      m.destination === currentUserCode &&
-      !m.opened
-  ).length;
+          // Count unread messages RECEIVED by current user
+          const unreadCount = msgs.filter(
+            (m) =>
+              m.destination === currentUserCode &&
+              !m.opened
+          ).length;
 
- convos.push({
-  userCode: partnerCode,
-  name: partnerUser
-    ? `${partnerUser.firstName} ${partnerUser.lastName}`
-    : partnerCode,
-  avatarLetters: partnerUser
-    ? `${partnerUser.firstName[0]}${partnerUser.lastName[0]}`.toUpperCase()
-    : partnerCode.slice(0, 2).toUpperCase(),
-  lastMessage: latestMsg.content,
-  timestamp: new Date(latestMsg.createdAt),
-  online: false,
-  unreadCount,
-});
+        convos.push({
+          userCode: partnerCode,
+          name: partnerUser
+            ? `${partnerUser.firstName} ${partnerUser.lastName}`
+            : partnerCode,
+          avatarLetters: partnerUser
+            ? `${partnerUser.firstName[0]}${partnerUser.lastName[0]}`.toUpperCase()
+            : partnerCode.slice(0, 2).toUpperCase(),
+          lastMessage: latestMsg.content,
+          timestamp: new Date(latestMsg.createdAt),
+          online: false,
+          unreadCount,
+        });
 
-}
+        }
 
-// Sort conversations by last activity
-convos.sort(
-  (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
-);
+        // Sort conversations by last activity
+        convos.sort(
+          (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
+        );
 
-setConversations(convos);
+        setConversations(convos);
 
       } catch (err: any) {
         console.error(err);

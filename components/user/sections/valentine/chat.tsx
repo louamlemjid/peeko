@@ -109,14 +109,7 @@ const Chat: React.FC<ChatProps> = ({
         )
       );
 
-      // Simulate "read" after a delay (optional – remove if recipient marks read later)
-      setTimeout(() => {
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === savedMessage._id ? { ...m, status: 'read' } : m
-          )
-        );
-      }, 1500);
+      
     } else {
       throw new Error(data.error || 'Unknown error');
     }
@@ -192,7 +185,7 @@ const Chat: React.FC<ChatProps> = ({
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Type a message..."
-            className="flex-1 resize-none rounded-3xl border-0 bg-gray-100 px-5 py-4 text-background focus:outline-none focus:ring-4 focus:ring-primary/20 focus:bg-white transition-all duration-200 placeholder:text-gray-500"
+            className="flex-1 resize-none rounded-3xl border-0 bg-gray-100 px-5 py-4 text-background focus:outline-none focus:ring-4 focus:ring-primary/20 focus:bg-foreground transition-all duration-200 placeholder:text-gray-500"
             rows={1}
             style={{ minHeight: '56px', maxHeight: '120px' }}
           />

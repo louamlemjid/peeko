@@ -18,7 +18,7 @@ export default function Home() {
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-br from-white via-gray-100 to-gray-200">
                 Why Choose
                 <br />
-                <span className="bg-gradient-to-r from-[#FE7F2D] to-primary  bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-fuchsia-400 via-purple-400 to-violet-500 bg-clip-text text-transparent">
                   AIAF?
                 </span>
               </h1>
@@ -26,34 +26,34 @@ export default function Home() {
              {/* Mobile Image - smaller & centered */}
             <div className="lg:hidden relative mt-12 flex justify-center">
               <div className="relative w-64 sm:w-80 max-w-full">
-                <div className="relative rounded-3xl overflow-hidden border border-primary/30 shadow-2xl shadow-primary/50">
-                  <div className="absolute inset-0  pointer-events-none z-10" />
+                <div className="relative rounded-3xl overflow-hidden border border-purple-500/30 shadow-2xl shadow-purple-900/50">
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70 pointer-events-none z-10" />
                   <Image
                     src="/peekoPoster.jpg"
                     alt="Peeko AI Agent - Mobile"
                     width={320}
                     height={520}
-                    className="w-full h-auto "
+                    className="w-full h-auto object-cover brightness-90 contrast-105 saturate-120"
                     priority
                   />
                 </div>
 
                 {/* Small glow effect */}
-                <div className="absolute inset-0  blur-xl animate-pulse-slow" />
+                <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-600/15 to-purple-600/20 blur-xl animate-pulse-slow" />
               </div>
             </div>
 
               {/* CTA Buttons - visible on all sizes */}
               <div className="flex flex-col sm:flex-row gap-4 pt-6 md:pt-8">
                 <Link
-                  href="/user"
-                  className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full bg-gradient-to-r from-[#FE7F2D] to-primary hover:from-[#FE7F2D] hover:to-violet-500 transition-all shadow-lg shadow-[#FE7F2D]/40 transform hover:scale-105"
+                  href="#"
+                  className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full bg-gradient-to-r from-fuchsia-600 to-violet-600 hover:from-fuchsia-500 hover:to-violet-500 transition-all shadow-lg shadow-fuchsia-900/40 transform hover:scale-105"
                 >
                   Join Now
                 </Link>
                 <Link
                   href="#"
-                  className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full border border-primary/50 bg-black/30 backdrop-blur-sm hover:bg-white/5 transition-all"
+                  className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full border border-purple-400/50 bg-black/30 backdrop-blur-sm hover:bg-white/5 transition-all"
                 >
                   Learn More
                 </Link>
@@ -65,10 +65,10 @@ export default function Home() {
               <div className="relative h-[680px] flex items-center justify-center -mr-8">
                 {/* Glow + vignette */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40 z-10 rounded-3xl" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#FE7F2D]/10 via-primary/15 to-transparent blur-3xl animate-pulse-slow z-0" />
+                <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-600/10 via-purple-600/15 to-transparent blur-3xl animate-pulse-slow z-0" />
 
                 <div className="relative z-20 transform -rotate-3 scale-105 transition-transform duration-700 hover:rotate-0 hover:scale-110">
-                  <div className="relative rounded-3xl overflow-hidden border border-primary/30 shadow-2xl shadow-primary/60">
+                  <div className="relative rounded-3xl overflow-hidden border border-purple-400/30 shadow-2xl shadow-purple-900/60">
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60 pointer-events-none z-10" />
                     <Image
                       src="/peekoPoster.jpg"
@@ -82,8 +82,8 @@ export default function Home() {
                 </div>
 
                 {/* Accent glows */}
-                <div className="absolute top-20 -left-10 w-32 h-32 bg-[#FE7F2D]/10 rounded-full blur-3xl animate-pulse-slow" />
-                <div className="absolute bottom-32 -right-16 w-48 h-48 bg-primary/10 rounded-full blur-3xl animate-pulse-slow delay-1000" />
+                <div className="absolute top-20 -left-10 w-32 h-32 bg-fuchsia-500/10 rounded-full blur-3xl animate-pulse-slow" />
+                <div className="absolute bottom-32 -right-16 w-48 h-48 bg-purple-600/10 rounded-full blur-3xl animate-pulse-slow delay-1000" />
               </div>
             </div>
 
@@ -92,21 +92,21 @@ export default function Home() {
                 {[
                   {
                     icon: ShieldCheck,
-                    color: 'from-[#FE7F2D]/30 to-primary/30',
-                    textColor: 'text-[#FE7F2D]',
+                    color: 'from-fuchsia-600/30 to-purple-600/30',
+                    textColor: 'text-fuchsia-400',
                     title: 'True Ownership',
                     desc: 'Full control of your AI agents through NFT ownership',
                   },
                   {
                     icon: Zap,
-                    color: 'from-violet-600/30 to-primary/30',
+                    color: 'from-violet-600/30 to-purple-600/30',
                     textColor: 'text-violet-400',
                     title: 'Professional Infrastructure',
                     desc: 'Enterprise-grade performance with decentralized benefits',
                   },
                   {
                     icon: DollarSign,
-                    color: 'from-pink-600/30 to-[#FE7F2D]/30',
+                    color: 'from-pink-600/30 to-fuchsia-600/30',
                     textColor: 'text-pink-400',
                     title: 'Multiple Revenue Streams',
                     desc: 'Diverse monetization options for AI creators',
@@ -121,7 +121,7 @@ export default function Home() {
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className="group bg-gradient-to-br from-primary/40 to-black backdrop-blur-md border border-primary/20 rounded-2xl p-6 md:p-7 transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/20 hover:scale-[1.03]"
+                    className="group bg-gradient-to-br from-purple-950/40 to-fuchsia-950/30 backdrop-blur-md border border-purple-500/20 rounded-2xl p-6 md:p-7 transition-all duration-300 hover:border-purple-400/50 hover:shadow-xl hover:shadow-purple-900/20 hover:scale-[1.03]"
                   >
                     <div
                       className={`w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-4 md:mb-5 transition-transform group-hover:scale-110`}

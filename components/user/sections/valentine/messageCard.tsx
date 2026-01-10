@@ -19,7 +19,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
   status = 'read',
   timestamp = '12:34',
 }) => {
-  const statusColor = status === 'read' ? 'text-primary-foreground' : 'text-gray-500';
+  const statusColor = status === 'read' ? 'text-white' : 'text-gray-500';
 
   return (
     <div className={`flex mb-4 ${isMine ? 'justify-end' : 'justify-start'}`}>
