@@ -19,7 +19,7 @@ export default function Home() {
                 Why Choose
                 <br />
                 <span className="bg-gradient-to-r from-[#FE7F2D] to-primary  bg-clip-text text-transparent">
-                  AIAF?
+                  Peeko?
                 </span>
               </h1>
 

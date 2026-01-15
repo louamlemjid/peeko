@@ -29,14 +29,14 @@ export default function Sidebar() {
   const [focus, setFocus] = useState('');
   const [animationsOpen, setAnimationsOpen] = useState(false);
   const [animationSetOpen, setAnimationSetOpen] = useState(false);
-  const [serviceOpen, setServiceOpen] = useState(false);
+  const [pictureSetOpen, setPictureSetOpen] = useState(false);
   const [zoneOpen,setZoneOpen] = useState(false)
 
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: Home },
     { href: '/dashboard/animation', label: 'Animations', icon: Dog },
     { href: '/dashboard/animationSet', label: 'AnimationSet', icon: Users },
-    { href: '/dashboard/service', label: 'Services', icon: HandPlatter },
+    { href: '/dashboard/pictureSet', label: 'PictureSets', icon: HandPlatter },
     { href: '/dashboard/zonesDesservies', label: 'zonesDesservies', icon: MapPin },
   ];
 
@@ -50,9 +50,9 @@ export default function Sidebar() {
     { href: '/dashboard/animationSet/createAnimationSet', label: 'Ajouter AnimationSet', icon: PlusCircle },
   ];
 
-  const serviceSubItems = [
-    { href: '/dashboard/service/editService', label: 'Gerer services', icon: Pencil },
-    { href: '/dashboard/service/createService', label: 'Ajouter services', icon: PlusCircle },
+  const pictureSetSubItems = [
+    { href: '/dashboard/pictureSet/editPictureSet', label: 'Gerer pictureSets', icon: Pencil },
+    { href: '/dashboard/pictureSet/createPictureSet', label: 'Ajouter pictureSets', icon: PlusCircle },
   ];
 
   const zoneSubItems = [
@@ -100,7 +100,7 @@ export default function Sidebar() {
                       if (isCollapsed) setIsCollapsed(false);
                       setAnimationsOpen(!animationsOpen);
                       setAnimationSetOpen(false);
-                      setServiceOpen(false)
+                      setPictureSetOpen(false)
                       setZoneOpen(false)
                       setFocus(''); // clear focus when toggling parent
                     }}
@@ -158,7 +158,7 @@ export default function Sidebar() {
                       if (isCollapsed) setIsCollapsed(false);
                       setAnimationSetOpen(!animationSetOpen);
                       setAnimationsOpen(false);
-                      setServiceOpen(false)
+                      setPictureSetOpen(false)
                       setZoneOpen(false)
                       setFocus(''); // clear focus when toggling parent
                     }}
@@ -207,14 +207,14 @@ export default function Sidebar() {
                   )}
                 </div>
               );
-            }else if (item.label === 'Services') {
+            }else if (item.label === 'PictureSets') {
               return (
                 <div key={item.label}>
                   <button
                     onClick={(e) => {
                       e.preventDefault();
                       if (isCollapsed) setIsCollapsed(false);
-                      setServiceOpen(!serviceOpen);
+                      setPictureSetOpen(!pictureSetOpen);
                       setAnimationsOpen(false);
                       setAnimationSetOpen(false)
                       setZoneOpen(false)
@@ -222,7 +222,7 @@ export default function Sidebar() {
                     }}
                     className={`w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-gradient-to-r from-sky-300 to-purple-300 transition
                     ${
-                      serviceOpen && !focus.startsWith('/dashboard/service/')
+                      pictureSetOpen && !focus.startsWith('/dashboard/pictureSet/')
                         ? 'bg-gradient-to-r from-purple-300 to-sky-300 text-white shadow-3xl'
                         : ''
                     }`}
@@ -232,7 +232,7 @@ export default function Sidebar() {
                       {!isCollapsed && <span>{item.label}</span>}
                     </div>
                     {!isCollapsed && (
-                      serviceOpen ? (
+                      pictureSetOpen ? (
                         <ChevronDown className="w-4 h-4" />
                       ) : (
                         <ChevronRight className="w-4 h-4" />
@@ -241,9 +241,9 @@ export default function Sidebar() {
                   </button>
 
                   {/* Submenu */}
-                  {serviceOpen && !isCollapsed && (
+                  {pictureSetOpen && !isCollapsed && (
                     <div className="ml-8 mt-1 flex flex-col gap-1">
-                      {serviceSubItems.map((sub) => (
+                      {pictureSetSubItems.map((sub) => (
                         <Link
                           key={sub.href}
                           href={sub.href}
@@ -273,7 +273,7 @@ export default function Sidebar() {
                       e.preventDefault();
                       if (isCollapsed) setIsCollapsed(false);
                       setZoneOpen(!zoneOpen);
-                      setServiceOpen(false)
+                      setPictureSetOpen(false)
                       setAnimationsOpen(false);
                       setAnimationSetOpen(false)
                       setFocus(''); // clear focus when toggling parent

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, ArrowLeft } from 'lucide-react';
+import { Send, ArrowLeft, SmileIcon } from 'lucide-react';
 import Link from 'next/link';
 import MessageCard from './messageCard';
 import { IMessage } from '@/model/message';
@@ -23,6 +23,7 @@ interface DisplayMessage {
   isMine: boolean;
   timestamp: Date;
   status: 'sent' | 'delivered' | 'read';
+  meta?: any;
 }
 
 const Chat: React.FC<ChatProps> = ({
@@ -173,6 +174,7 @@ const Chat: React.FC<ChatProps> = ({
             status={message.status}
             timestamp={message.timestamp}
           />
+          
         ))}
         <div ref={messagesEndRef} />
       </div>
@@ -196,6 +198,9 @@ const Chat: React.FC<ChatProps> = ({
           >
             <Send className="h-6 w-6" />
           </button>
+          <div>
+            <SmileIcon className="h-6 w-6" />
+          </div>
         </div>
       </div>
 
