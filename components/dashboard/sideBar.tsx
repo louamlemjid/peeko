@@ -19,9 +19,9 @@ import {
   PanelLeftOpen,
   Pencil,
   PlusCircle,
-  HandPlatter,
-  MapPin,
-  Dog
+  Dog,
+  Images,
+  Tag
 } from 'lucide-react';
 
 export default function Sidebar() {
@@ -30,14 +30,14 @@ export default function Sidebar() {
   const [animationsOpen, setAnimationsOpen] = useState(false);
   const [animationSetOpen, setAnimationSetOpen] = useState(false);
   const [pictureSetOpen, setPictureSetOpen] = useState(false);
-  const [zoneOpen,setZoneOpen] = useState(false)
+  const [versionOpen,setVersionOpen] = useState(false)
 
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: Home },
     { href: '/dashboard/animation', label: 'Animations', icon: Dog },
     { href: '/dashboard/animationSet', label: 'AnimationSet', icon: Users },
-    { href: '/dashboard/pictureSet', label: 'PictureSets', icon: HandPlatter },
-    { href: '/dashboard/zonesDesservies', label: 'zonesDesservies', icon: MapPin },
+    { href: '/dashboard/pictureSet', label: 'PictureSets', icon: Images },
+    { href: '/dashboard/version', label: 'Version', icon: Tag },
   ];
 
   const centerSubItems = [
@@ -56,8 +56,8 @@ export default function Sidebar() {
   ];
 
   const zoneSubItems = [
-    { href: '/dashboard/zonesDesservies/editZone', label: 'Gerer zones', icon: Pencil },
-    { href: '/dashboard/zonesDesservies/createZone', label: 'Ajouter zones', icon: PlusCircle },
+    { href: '/dashboard/version/editVersion', label: 'Gerer zones', icon: Pencil },
+    { href: '/dashboard/version/createVersion', label: 'Ajouter zones', icon: PlusCircle },
   ];
 
   return (
@@ -91,7 +91,7 @@ export default function Sidebar() {
       <nav className="border-b-2 border-blue-400 py-4">
         <div className="flex flex-col gap-1">
           {navItems.map((item) => {
-            if (item.label === 'Centres') {
+            if (item.label === 'Animations') {
               return (
                 <div key={item.label}>
                   <button
@@ -101,7 +101,7 @@ export default function Sidebar() {
                       setAnimationsOpen(!animationsOpen);
                       setAnimationSetOpen(false);
                       setPictureSetOpen(false)
-                      setZoneOpen(false)
+                      setVersionOpen(false)
                       setFocus(''); // clear focus when toggling parent
                     }}
                     className={`w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-gradient-to-r from-sky-300 to-purple-300 transition
@@ -149,7 +149,7 @@ export default function Sidebar() {
                   )}
                 </div>
               );
-            } else if (item.label === 'Blogs') {
+            } else if (item.label === 'AnimationSet') {
               return (
                 <div key={item.label}>
                   <button
@@ -159,7 +159,7 @@ export default function Sidebar() {
                       setAnimationSetOpen(!animationSetOpen);
                       setAnimationsOpen(false);
                       setPictureSetOpen(false)
-                      setZoneOpen(false)
+                      setVersionOpen(false)
                       setFocus(''); // clear focus when toggling parent
                     }}
                     className={`w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-gradient-to-r from-sky-300 to-purple-300 transition
@@ -217,7 +217,7 @@ export default function Sidebar() {
                       setPictureSetOpen(!pictureSetOpen);
                       setAnimationsOpen(false);
                       setAnimationSetOpen(false)
-                      setZoneOpen(false)
+                      setVersionOpen(false)
                       setFocus(''); // clear focus when toggling parent
                     }}
                     className={`w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-gradient-to-r from-sky-300 to-purple-300 transition
@@ -265,14 +265,14 @@ export default function Sidebar() {
                   )}
                 </div>
               );
-            } else if (item.label === 'zonesDesservies') {
+            } else if (item.label === 'Version') {
               return (
                 <div key={item.label}>
                   <button
                     onClick={(e) => {
                       e.preventDefault();
                       if (isCollapsed) setIsCollapsed(false);
-                      setZoneOpen(!zoneOpen);
+                      setVersionOpen(!versionOpen);
                       setPictureSetOpen(false)
                       setAnimationsOpen(false);
                       setAnimationSetOpen(false)
@@ -280,7 +280,7 @@ export default function Sidebar() {
                     }}
                     className={`w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-gradient-to-r from-sky-300 to-purple-300 transition
                     ${
-                      zoneOpen && !focus.startsWith('/dashboard/zoneDesservies/')
+                      versionOpen && !focus.startsWith('/dashboard/zoneDesservies/')
                         ? 'bg-gradient-to-r from-purple-300 to-sky-300 text-white shadow-3xl'
                         : ''
                     }`}
@@ -290,7 +290,7 @@ export default function Sidebar() {
                       {!isCollapsed && <span>{item.label}</span>}
                     </div>
                     {!isCollapsed && (
-                      zoneOpen ? (
+                      versionOpen ? (
                         <ChevronDown className="w-4 h-4" />
                       ) : (
                         <ChevronRight className="w-4 h-4" />
@@ -299,7 +299,7 @@ export default function Sidebar() {
                   </button>
 
                   {/* Submenu */}
-                  {zoneOpen && !isCollapsed && (
+                  {versionOpen && !isCollapsed && (
                     <div className="ml-8 mt-1 flex flex-col gap-1">
                       {zoneSubItems.map((sub) => (
                         <Link
