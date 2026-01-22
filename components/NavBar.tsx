@@ -29,7 +29,7 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 1);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -51,19 +51,19 @@ export default function Navigation() {
           {/* Logo */}
           
             <Link href="/" className="flex items-center gap-2 ">
-              <div className="relative w-32 aspect-[3/1] rounded-3xl"> 
+              <div className="relative w-32 aspect-[3/1] "> 
         <Image
-          src="/peeko.jpg"
+          src="/logodark.png"
               alt="Logo"
               fill
-              className="object-contain block dark:hidden md:ml-4 rounded-3xl"
+              className="object-contain dark:block md:ml-4"
              />
-                 <Image
-              src="/peeko.jpg"
-          alt="Logo"
-             fill
-             className="object-contain hidden dark:block md:ml-4 rounded-3xl"
-        />
+              <Image
+           src="/logolight.png"
+       alt="Logo"
+          fill
+          className="object-contain dark:hidden md:ml-4"
+     />
           </div>
             </Link>
 
