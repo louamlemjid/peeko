@@ -57,7 +57,7 @@ export default function VersionCard({
     }
 
     const num = parseInt(editNumber);
-    if (isNaN(num) || num < 1) {
+    if (isNaN(num) || num < 0) {
       toast.error("Version number must be a positive integer");
       return;
     }
@@ -66,9 +66,9 @@ export default function VersionCard({
 
     const payload = {
       name: editName.trim(),
-      description: editDescription.trim(),
+      description: editDescription,
       number: num,
-      link: editLink.trim(),
+      link: editLink,
     };
 
     try {
