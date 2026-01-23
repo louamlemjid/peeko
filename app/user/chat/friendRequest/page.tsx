@@ -5,6 +5,7 @@ import { useUser } from '@clerk/nextjs';
 import { useUserAuth } from '@/hooks/userAuth';
 import { UserCheck, Clock, UserPlus, AlertCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 type FriendRequestUser = {
   _id: string;
@@ -16,7 +17,7 @@ type FriendRequestUser = {
 
 export default function FriendRequestsPage() {
   const { user: clerkUser } = useUser();
-  const { user: currentUser, loading: authLoading } = useUserAuth(clerkUser?.id);
+  const { user: currentUser, loading: authLoading,refetch } = useUserAuth(clerkUser?.id);
 
   const [processing, setProcessing] = useState<string | null>(null); // _id of request being accepted
 
@@ -44,7 +45,8 @@ export default function FriendRequestsPage() {
       // Optimistic update: remove from list immediately
       // (the real update happens on server → you can refetch user if needed)
       // For simplicity here we just remove it locally
-      alert('Friend request accepted!');
+      toast.success('Friend request accepted!');
+      refetch();
       // Optional: force refresh user data via your auth hook or context
       // or leave it — next navigation/page reload will show updated friends
 
@@ -80,15 +82,7 @@ export default function FriendRequestsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-        
-     
-        <Link href={"/user/chat"} className="flex bg-white shadow-sm px-6 py-5 border-b border-gray-100">
-            <ArrowLeft className='h-5 w-5 text-background'/>
-            <h1 className="text-2xl font-bold text-gray-900">Friend Requests</h1>
-        </Link>
-        
       
-
       <div className="flex-1 px-4 py-6 max-w-2xl mx-auto w-full">
         {requests.length === 0 ? (
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-10 text-center">

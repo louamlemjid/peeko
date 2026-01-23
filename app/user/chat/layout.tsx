@@ -1,4 +1,5 @@
 import BottomNav from "@/components/user/bottomNav";
+import TopNav from "@/components/user/sections/valentine/topNav";
 import type { Metadata } from "next";
 
 
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
    <div className="">
       {/* Main content area - takes available space */}
+      <TopNav/>
       <main className="">{children}</main>
        
     </div>

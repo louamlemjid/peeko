@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { UserPlus, Users, MessageCircle, Clock, UserCheck, ArrowUpRightFromSquare, ArrowLeft } from 'lucide-react';
 import { useUser } from '@clerk/nextjs';
 import { useUserAuth } from '@/hooks/userAuth'; // your custom hook
+import { toast } from 'react-toastify';
 
 // Assuming this type from your model
 type UserSearchResult = {
@@ -16,7 +17,7 @@ type UserSearchResult = {
 
 export default function NewChatPage() {
   const { user: clerkUser } = useUser();
-  const { user: currentUser, loading: authLoading } = useUserAuth(clerkUser?.id);
+  const { user: currentUser, loading: authLoading,refetch } = useUserAuth(clerkUser?.id);
 
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState<UserSearchResult[]>([]);
@@ -90,7 +91,8 @@ export default function NewChatPage() {
         return;
       }
 
-      alert('Friend request sent!');
+      toast.success('Friend request sent!');
+      refetch();
       // Optional: refresh currentUser / friends list here
       // or show "Pending" state locally (more advanced)
 
@@ -158,11 +160,7 @@ export default function NewChatPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
-      <Link href={"/user/chat"} className="bg-white shadow-sm px-6 py-5 border-b border-gray-100 sticky top-0 z-10">
-        <ArrowLeft className='h-5 w-5 text-background'/>
-      </Link>
-
+    
       <div className="flex-1 overflow-y-auto px-4 py-6 pb-24 max-w-2xl mx-auto w-full space-y-10">
         {/* Add Friend Section */}
         <section className="space-y-4">

@@ -164,10 +164,7 @@ const UsersMap: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen bg-white">
-      {/* Header */}
-      <div className="bg-white shadow-sm px-6 py-5 border-b border-gray-100">
-        <h1 className="text-2xl font-bold text-gray-900">Messages</h1>
-      </div>
+      
 
       {/* Conversations List */}
       <div className="flex-1 overflow-y-auto bg-gray-50">

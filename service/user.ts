@@ -78,6 +78,7 @@ export async function getUserByClerkId(clerkId: string) :Promise<IUser|null> {
     const user = await User.findOne({ clerkId })
     .populate("peeko")
     .populate("receivedPendingFriendRequests")
+    .populate("friends")
     .lean(); // lean() returns plain JSON
 console.log(user)
   return user ? JSON.parse(JSON.stringify(user)) : null;

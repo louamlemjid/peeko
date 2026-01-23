@@ -47,7 +47,10 @@ export async function getInbox(userCode: string): Promise<IMessage[]> {
       // 1️⃣ Only messages sent to this user
       {
         $match: {
-          destination: userCode,
+          $or: [
+            { source: userCode },
+            { destination: userCode },
+          ],
         },
       },
 
