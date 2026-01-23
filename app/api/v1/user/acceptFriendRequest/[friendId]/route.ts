@@ -1,5 +1,4 @@
 import { acceptFriendRequest } from "@/service/user";
-import {useAuth} from "@clerk/nextjs"
 import { NextRequest, NextResponse } from "next/server";
 
 interface Params {
@@ -17,18 +16,16 @@ export async function PATCH(req: NextRequest, { params }: Params) {
       );
     }
 
-    const {userId} = useAuth();
+    const {clerkId} = await  req.json();
 
-    if (!userId) {
+    if (!clerkId) {
       return NextResponse.json(
-        { error: "Missing userId : clerkId in URL" },
+        { error: "Missing  clerkId in URL" },
         { status: 400 }
       );
     }
 
-
-
-    const user = await acceptFriendRequest(userId,friendId);
+    const user = await acceptFriendRequest(clerkId,friendId);
 
     if (!user) {
       return NextResponse.json(

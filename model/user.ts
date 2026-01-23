@@ -25,7 +25,9 @@ export interface IUser {
 
   /* Social */
   friends: string[] | IUser[];
-  pendingFriendRequests: string[] | IUser[];
+  sentPendingFriendRequests: string[] | IUser[];
+  receivedPendingFriendRequests: string[] | IUser[];
+
   peeko:string | IPeeko;
   animationSets:string[] | IAnimationSet[];
 
@@ -102,13 +104,22 @@ const UserSchema = new Schema<IUser>(
       },
     ],
 
-    pendingFriendRequests: [
+    sentPendingFriendRequests: [
       {
         type: Schema.Types.ObjectId,
         ref: "User",
         default: [],
       },
     ],
+
+    receivedPendingFriendRequests: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        default: [],
+      },
+    ],
+    
     peeko :{
       type:Schema.Types.ObjectId,
       ref:"Peeko",

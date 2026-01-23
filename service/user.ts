@@ -77,6 +77,7 @@ export async function getUserByClerkId(clerkId: string) :Promise<IUser|null> {
   try {
     const user = await User.findOne({ clerkId })
     .populate("peeko")
+    .populate("receivedPendingFriendRequests")
     .lean(); // lean() returns plain JSON
 console.log(user)
   return user ? JSON.parse(JSON.stringify(user)) : null;
@@ -146,13 +147,13 @@ export async function sendFriendRequest(
   try {
     // Prevent self-request and already-friends/already-pending cases can be handled
     // either here or in frontend – minimal version below
-
+    console.log(senderClerkId,friendId)
     const updatedSender = await User.findOneAndUpdate(
       {
         clerkId: senderClerkId
       },
       {
-        $addToSet: { pendingFriendRequests: friendId },
+        $addToSet: { sentPendingFriendRequests: friendId },
       },
       { new: true, lean: true }
     );
@@ -161,6 +162,16 @@ export async function sendFriendRequest(
       // Either user not found, or was already friend/pending/self
       return null;
     }
+
+    const updatedReceiver = await User.findByIdAndUpdate(
+      
+        friendId,
+      {
+        $addToSet: { receivedPendingFriendRequests: updatedSender._id },
+      },
+      { new: true, lean: true }
+    );
+
 
     return JSON.parse(JSON.stringify(updatedSender));
   } catch (error) {
@@ -185,19 +196,14 @@ export async function acceptFriendRequest(
     // 1. Update receiver: remove from pending + add to friends
     // 2. Update sender: add receiver to friends
 
-    const receiverObjectId = friendId; // rename for clarity
-    const receiver = await User.findOne({ clerkId: receiverClerkId }).lean();
-
-    if (!receiver) return null;
-
-    const receiverId = receiver._id.toString();
-
     // Update receiver
-    const updatedReceiver = await User.findByIdAndUpdate(
-      receiver._id,
+    const updatedReceiver = await User.findOneAndUpdate(
       {
-        $pull: { pendingFriendRequests: receiverObjectId },
-        $addToSet: { friends: receiverObjectId },
+        clerkId:receiverClerkId
+      },
+      {
+        $pull: { receivedPendingFriendRequests: friendId },
+        $addToSet: { friends: friendId },
       },
       { new: true, lean: true }
     );
@@ -206,9 +212,10 @@ export async function acceptFriendRequest(
 
     // Update sender (mutual friendship)
     await User.findByIdAndUpdate(
-      receiverObjectId,
+      friendId,
       {
-        $addToSet: { friends: receiverId },
+        $pull: { sentPendingFriendRequests: updatedReceiver._id },
+        $addToSet: { friends: updatedReceiver._id },
       },
       { new: true } // we don't need the result here
     );
@@ -216,6 +223,49 @@ export async function acceptFriendRequest(
     return JSON.parse(JSON.stringify(updatedReceiver));
   } catch (error) {
     console.error("service/user acceptFriendRequest:", error);
+    return null;
+  }
+}
+
+
+/**
+ * Search users by firstName or lastName (case-insensitive partial match)
+ * Returns max 3 matching users
+ * @param search - search term (will be trimmed and lowercased)
+ */
+export async function getUsersByParams(search: string): Promise<Partial<IUser>[] | null> {
+  await dbConnect();
+
+  try {
+    const trimmed = search.trim();
+    if (!trimmed) return [];
+
+    // Case-insensitive partial match on firstName OR lastName
+    const users = await User.find(
+      {
+        $or: [
+          { firstName: { $regex: trimmed, $options: 'i' } },
+          { lastName:  { $regex: trimmed, $options: 'i' } },
+        ],
+        // Optional: exclude the current user if you pass clerkId and want to avoid self
+        // clerkId: { $ne: currentClerkId }   ← add if needed
+      },
+      {
+        _id: 1,
+        userCode: 1,
+        firstName: 1,
+        lastName: 1,
+        // you can add more fields if needed: email, username, etc.
+      }
+    )
+      .limit(3)
+      .lean()
+      .exec();
+
+    // Optional: convert to plain objects + stringify if your other functions do this
+    return users.length > 0 ? JSON.parse(JSON.stringify(users)) : [];
+  } catch (error) {
+    console.error("service/user getUsersByParams:", error);
     return null;
   }
 }
