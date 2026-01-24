@@ -8,6 +8,8 @@ import { formatDistanceToNow } from 'date-fns';
 import { IMessage } from '@/model/message';
 import { useUser } from '@clerk/nextjs';
 import { IUser } from "@/model/user";
+import { useLongPress } from '@/hooks/longPress';
+import ConversationItem from './conversationItem';
 
 function isUserPopulated(
   user: string | IUser
@@ -26,6 +28,9 @@ interface ConversationPartner {
   online: boolean;
   unreadCount: number;
 }
+ export const formatTime = (date: Date) => {
+    return formatDistanceToNow(date, { addSuffix: true });
+  };
 
 const UsersMap: React.FC = () => {
   const { user: clerkUser,isLoaded } = useUser();
@@ -37,6 +42,9 @@ const UsersMap: React.FC = () => {
   const [conversations, setConversations] = useState<ConversationPartner[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+const [selectedConvo, setSelectedConvo] = useState(null);
+
+ 
 
   const fetchInbox = async () => {
         console.log(currentUserCode,authLoading)
@@ -142,9 +150,7 @@ const UsersMap: React.FC = () => {
     fetchInbox();
   }, [currentUserCode, authLoading]);
 
-  const formatTime = (date: Date) => {
-    return formatDistanceToNow(date, { addSuffix: true });
-  };
+
 
   if (authLoading || loading) {
     return (
@@ -174,52 +180,14 @@ const UsersMap: React.FC = () => {
           </div>
         ) : (
           conversations.map((convo) => (
-            <Link
-              key={convo.userCode}
-              href={`/user/chat/${convo.userCode}`}
-              className="block hover:bg-gray-100 transition-colors"
-            >
-              <div className="flex items-center gap-4 px-6 py-4">
-                {/* Avatar */}
-                <div className="relative">
-                  <div className="w-14 h-14 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
-                    {convo.avatarLetters}
-                  </div>
-                  {convo.online && (
-                    <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-4 border-white shadow-sm" />
-                  )}
-                </div>
-
-                {/* User Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-gray-900 truncate">
-                      {convo.name}
-                    </h3>
-                    <span className="text-sm text-gray-500">
-                      {formatTime(convo.timestamp)}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-600 truncate mt-1">
-                    {convo.lastMessage}
-                  </p>
-                </div>
-
-                {/* Unread Badge */}
-                {convo.unreadCount > 0 && (
-                  <div className="flex items-center justify-center w-8 h-8 bg-primary text-white text-sm font-bold rounded-full shadow-md">
-                    {convo.unreadCount > 99 ? '99+' : convo.unreadCount}
-                  </div>
-                )}
-              </div>
-            </Link>
+            <ConversationItem key={convo.userCode} convo={convo} />
           ))
         )}
       </div>
 
       {/* Floating New Message Button */}
       <Link
-        href="/user/chat/new"
+        href="/user/chat/friends"
         className="fixed bottom-20 right-6 bg-primary text-white rounded-full p-4 shadow-2xl hover:bg-primary/90 transition-all hover:scale-110"
         aria-label="New message"
       >

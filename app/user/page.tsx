@@ -53,14 +53,14 @@ export default function UserPage() {
   },[userId])
   
   return (
-    <div className="flex flex-col min-h-screen justify-center bg-background pt-16">
-      <div className="bg-gradient-to-b from-background via-orange-400/50 to-background">
+    <div className="flex flex-col min-h-screen  bg-background pt-16">
+      <div className="bg-gradient-to-b from-background via-primary to-background">
       <PeekoCode code={userCode} label="Peeko verification code" />
       
       <PeekoName peekoCode={userCode} initialName={peeko ? peeko.peekoName : ""} />
       <PeekoMoodSection peekoCode={userCode} initialMood={peeko ? peeko.mood : PeekoMood.DEFAULT} />
       </div>
-      <Slider/>
+      {/* <Slider/> */}
      
     </div>
   );

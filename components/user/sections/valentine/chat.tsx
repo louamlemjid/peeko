@@ -141,7 +141,7 @@ const Chat: React.FC<ChatProps> = ({
       {/* Header */}
       <div className="bg-white shadow-sm px-4 py-5 border-b border-gray-100">
         <div className="flex items-center gap-4 max-w-4xl mx-auto">
-          <Link href="/user/chat" className="lg:hidden">
+          <Link href="/user/chat" className="">
             <ArrowLeft className="h-6 w-6 text-gray-700" />
           </Link>
 
@@ -164,11 +164,12 @@ const Chat: React.FC<ChatProps> = ({
       </div>
 
       {/* Messages Area */}
-      <div className="h-[65vh] overflow-y-auto px-4 py-8 relative bg-primary/5 mb-30">
+      <div className="h-[45vh] overflow-y-auto px-4 py-8 relative bg-primary/5">
         <div className="absolute inset-0 bg-chat-pattern opacity-5 pointer-events-none" />
         {messages.map((message) => (
           <MessageCard
             key={message.id}
+            messageId={message.id}
             text={message.text}
             isMine={message.isMine}
             status={message.status}
@@ -180,7 +181,7 @@ const Chat: React.FC<ChatProps> = ({
       </div>
 
       {/* Input */}
-      <div className="absolute bottom-0 left-0 right-0 bg-white shadow-2xl rounded-3xl px-5 py-6">
+      <div className=" bg-white shadow-2xl rounded-3xl px-5 py-6">
 
         <div className="flex items-end gap-3 max-w-4xl mx-auto">
           <textarea
