@@ -50,7 +50,7 @@ export default function RootLayout({
               pauseOnHover
               theme="light"
             />
-            <Footer/>
+            {/* <Footer/> */}
         </ClerkProvider>
       </body>
     </html>

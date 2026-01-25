@@ -1,18 +1,14 @@
 'use client';
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, ArrowLeft, SmileIcon } from 'lucide-react';
 import Link from 'next/link';
 import MessageCard from './messageCard';
 import { IMessage } from '@/model/message';
 
-
-
 interface ChatProps {
   userCode: string;
   name: string;
   avatarLetters: string;
-  // online: boolean;
   initialMessages: IMessage[];
   currentUserCode: string;
 }
@@ -29,16 +25,55 @@ interface DisplayMessage {
 const Chat: React.FC<ChatProps> = ({
   name,
   avatarLetters,
-  // online,
   userCode,
   initialMessages,
   currentUserCode,
 }) => {
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [inputText, setInputText] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
-  // Convert IMessage → DisplayMessage
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Detect keyboard open/close via visualViewport
+  useEffect(() => {
+    const handleViewportChange = () => {
+      if (!window.visualViewport) return;
+
+      const viewportHeight = window.visualViewport.height;
+      const windowHeight = window.innerHeight;
+
+      // Heuristic: keyboard likely open if visual viewport shrinks significantly
+      const likelyKeyboardOpen = viewportHeight < windowHeight * 0.75;
+      setIsKeyboardOpen(likelyKeyboardOpen);
+    };
+
+    const viewport = window.visualViewport;
+    if (viewport) {
+      viewport.addEventListener('resize', handleViewportChange);
+      viewport.addEventListener('scroll', handleViewportChange);
+    }
+
+    window.addEventListener('resize', handleViewportChange);
+
+    // Initial check
+    handleViewportChange();
+
+    return () => {
+      if (viewport) {
+        viewport.removeEventListener('resize', handleViewportChange);
+        viewport.removeEventListener('scroll', handleViewportChange);
+      }
+      window.removeEventListener('resize', handleViewportChange);
+    };
+  }, []);
+useEffect(() => {
+  const el = document.getElementById('chat-messages');
+  if (!el) return;
+  el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+}, [messages]);
+
+  // Convert initial messages
   useEffect(() => {
     const converted = initialMessages.map((msg) => ({
       id: msg._id,
@@ -50,84 +85,64 @@ const Chat: React.FC<ChatProps> = ({
     setMessages(converted);
   }, [initialMessages, currentUserCode]);
 
-  // // Auto-scroll to bottom when new messages
-  // useEffect(() => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  // }, [messages]);
-
   const handleSend = async () => {
-  if (!inputText.trim()) return;
+    if (!inputText.trim()) return;
+    const newMsgText = inputText.trim();
+    const optimisticId = Date.now().toString();
 
-  const newMsgText = inputText.trim();
-  const optimisticId = Date.now().toString();
+    const optimisticMessage: DisplayMessage = {
+      id: optimisticId,
+      text: newMsgText,
+      isMine: true,
+      timestamp: new Date(),
+      status: 'sent',
+    };
 
-  const optimisticMessage: DisplayMessage = {
-    id: optimisticId,
-    text: newMsgText,
-    isMine: true,
-    timestamp: new Date(),
-    status: 'sent',
-  };
+    setMessages((prev) => [...prev, optimisticMessage]);
+    setInputText('');
 
-  // Optimistically add message to UI
-  setMessages((prev) => [...prev, optimisticMessage]);
-  setInputText('');
+    try {
+      const res = await fetch('/api/v1/message/new', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: currentUserCode,
+          destination: userCode,
+          content: newMsgText,
+        }),
+      });
 
-  try {
-    const res = await fetch('/api/v1/message/new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        source: currentUserCode,
-        destination: userCode, // the recipient's userCode from props
-        content: newMsgText,
-      }),
-    });
+      if (!res.ok) throw new Error('Failed to send message');
 
-    if (!res.ok) {
-      throw new Error('Failed to send message');
-    }
-
-    const data = await res.json();
-
-    if (data.success && data.message) {
-      const savedMessage: IMessage = data.message;
-
-      // Replace optimistic message with real one from server
+      const data = await res.json();
+      if (data.success && data.message) {
+        const savedMessage: IMessage = data.message;
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === optimisticId
+              ? {
+                  id: savedMessage._id,
+                  text: savedMessage.content,
+                  isMine: true,
+                  timestamp: new Date(savedMessage.createdAt),
+                  status: 'delivered',
+                }
+              : m
+          )
+        );
+      } else {
+        throw new Error(data.error || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('Send message error:', error);
       setMessages((prev) =>
         prev.map((m) =>
-          m.id === optimisticId
-            ? {
-                id: savedMessage._id,
-                text: savedMessage.content,
-                isMine: true,
-                timestamp: new Date(savedMessage.createdAt),
-                status: 'delivered', // or 'read' if you mark on send
-              }
-            : m
+          m.id === optimisticId ? { ...m, status: 'sent' } : m
         )
       );
-
-      
-    } else {
-      throw new Error(data.error || 'Unknown error');
+      alert('Failed to send message. Please try again.');
     }
-  } catch (error) {
-    console.error('Send message error:', error);
-
-    // Optionally: mark as failed or remove optimistic message
-    setMessages((prev) =>
-      prev.map((m) =>
-        m.id === optimisticId ? { ...m, status: 'sent' } : m // keep as sent, or add 'failed'
-      )
-    );
-
-    // You could show a toast: "Message failed to send"
-    alert('Failed to send message. Please try again.');
-  }
-};
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -137,34 +152,29 @@ const Chat: React.FC<ChatProps> = ({
   };
 
   return (
-    <div className=" flex flex-col bg-white">
+    <div className="flex flex-col h-[74dvh] bg-white overflow-hidden">
       {/* Header */}
-      <div className="bg-white shadow-sm px-4 py-5 border-b border-gray-100">
+      <div className="bg-white shadow-sm px-4 py-5 border-b border-gray-100 shrink-0">
         <div className="flex items-center gap-4 max-w-4xl mx-auto">
-          <Link href="/user/chat" className="">
+          <Link href="/user/chat">
             <ArrowLeft className="h-6 w-6 text-gray-700" />
           </Link>
-
           <div className="relative">
             <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center text-white font-bold text-lg">
               {avatarLetters}
             </div>
-            {/* {online && (
-              <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-4 border-white" />
-            )} */}
           </div>
-
           <div>
             <h2 className="text-xl font-semibold text-gray-900">{name}</h2>
-            {/* <p className="text-sm font-medium text-green-500">
-              {online ? 'Online' : 'Offline'}
-            </p> */}
           </div>
         </div>
       </div>
 
       {/* Messages Area */}
-      <div className="h-[45vh] overflow-y-auto px-4 py-8 relative bg-primary/5">
+      <div
+        id="chat-messages"
+        className="flex-1 overflow-y-auto px-4 py-6 bg-primary/5 relative"
+      >
         <div className="absolute inset-0 bg-chat-pattern opacity-5 pointer-events-none" />
         {messages.map((message) => (
           <MessageCard
@@ -175,21 +185,28 @@ const Chat: React.FC<ChatProps> = ({
             status={message.status}
             timestamp={message.timestamp}
           />
-          
         ))}
-        <div ref={messagesEndRef} />
+        
       </div>
 
-      {/* Input */}
-      <div className=" bg-white shadow-2xl rounded-3xl px-5 py-6">
-
-        <div className="flex items-end gap-3 max-w-4xl mx-auto">
+      {/* Input Area – padding increases when keyboard detected */}
+      <div
+        className="sticky bottom-0 bg-white px-5 py-4 shadow-2xl"
+        style={{
+          paddingBottom: isKeyboardOpen
+            ? 'var(--input-area-height, 290px)' // adjust fallback if your input + button area is taller/shorter
+            : 'env(safe-area-inset-bottom, 16px)',
+          transition: 'padding-bottom 0.25s ease-out',
+        }}
+      >
+        <div className="flex items-end gap-3 max-w-4xl mx-auto py-4">
           <textarea
+            ref={inputRef}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Type a message..."
-            className="flex-1 resize-none rounded-3xl border-0 bg-gray-100 px-5 py-4 text-background focus:outline-none focus:ring-4 focus:ring-primary/20 focus:bg-foreground transition-all duration-200 placeholder:text-gray-500"
+            className="chat-input flex-1 resize-none rounded-3xl border-0 bg-gray-100 px-5 py-4 text-background focus:outline-none focus:ring-4 focus:ring-primary/20 focus:bg-foreground transition-all duration-200 placeholder:text-gray-500"
             rows={1}
             style={{ minHeight: '56px', maxHeight: '120px' }}
           />

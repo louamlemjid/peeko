@@ -132,7 +132,7 @@ export default function NewChatPage() {
           disabled
           className="px-5 py-2 text-sm bg-green-100 text-green-700 rounded-full flex items-center gap-1.5"
         >
-          <UserCheck size={16} /> Friends
+          <UserCheck size={16} /> Friend
         </button>
       );
     }
@@ -185,7 +185,7 @@ export default function NewChatPage() {
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   placeholder="Peeko code (e.g. A1B2C3) or name"
-                  className="flex-1 px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg  focus:ring-2 focus:primary focus:border-primary transition-all text-background placeholder:tracking-normal"
+                  className="flex-1 px-4 py-3 bg-foreground border border-gray-300 rounded-lg  focus:ring-2 focus:primary focus:border-primary transition-all text-background placeholder:tracking-normal"
                 />
               </div>
 
