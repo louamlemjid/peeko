@@ -6,6 +6,7 @@ import { useUserAuth } from '@/hooks/userAuth';
 import { UserCheck, Clock, UserPlus, AlertCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
+import { useUserAuthContext } from '@/hooks/UserAuthProvider';
 
 type FriendRequestUser = {
   _id: string;
@@ -17,7 +18,7 @@ type FriendRequestUser = {
 
 export default function FriendRequestsPage() {
   const { user: clerkUser } = useUser();
-  const { user: currentUser, loading: authLoading,refetch } = useUserAuth(clerkUser?.id);
+const { user: currentUser, loading: authLoading, refetch } = useUserAuthContext();
 
   const [processing, setProcessing] = useState<string | null>(null); // _id of request being accepted
 

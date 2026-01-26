@@ -1,23 +1,26 @@
+"use client"
 import BottomNav from "@/components/user/bottomNav";
 import TopNav from "@/components/user/sections/valentine/topNav";
-import type { Metadata } from "next";
+import { UserAuthProvider } from "@/hooks/UserAuthProvider";
+import { useUser } from "@clerk/nextjs";
 
 
-export const metadata: Metadata = {
-  title: "chat",
-  description: "chat peeko",
-};
-
-export default function RootLayout({
+export default function UserLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { user } = useUser();
+
   return (
    <div className="">
-      {/* Main content area - takes available space */}
+    <UserAuthProvider clerkId={user?.id}>
       <TopNav/>
-      <main className="">{children}</main>
+      {children}
+    </UserAuthProvider>
+      {/* Main content area - takes available space */}
+      
+    
        
     </div>
   );
