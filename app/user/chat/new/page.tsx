@@ -185,7 +185,7 @@ export default function NewChatPage() {
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   placeholder="Peeko code (e.g. A1B2C3) or name"
-                  className="flex-1 px-4 py-3 bg-foreground border border-gray-300 rounded-lg  focus:ring-2 focus:primary focus:border-primary transition-all text-background placeholder:tracking-normal"
+                  className="flex-1 px-4 py-3 bg-background border border-gray-300 rounded-lg  focus:ring-2 focus:primary focus:border-primary transition-all text-foreground placeholder:tracking-normal"
                 />
               </div>
 

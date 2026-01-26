@@ -29,6 +29,7 @@ export function useLongPress(
       onMouseUp: clear,
       onMouseLeave: clear,
       onTouchEnd: clear,
+       onTouchCancel: clear,
     },
     isLongPress,
   };
