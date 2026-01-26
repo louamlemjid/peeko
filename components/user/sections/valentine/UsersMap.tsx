@@ -115,10 +115,10 @@ const [selectedConvo, setSelectedConvo] = useState(null);
         convos.push({
           userCode: partnerCode,
           name: partnerUser
-            ? `${partnerUser.firstName} ${partnerUser.lastName}`
+            ? `${partnerUser.firstName !== null ? partnerUser.firstName: ""}${partnerUser.lastName !== null ? partnerUser.lastName : ""}`
             : partnerCode,
           avatarLetters: partnerUser
-            ? `${partnerUser.firstName[0]}${partnerUser.lastName[0]}`.toUpperCase()
+            ? `${partnerUser.firstName !== null ? partnerUser.firstName[0]: ""}${partnerUser.lastName !== null ? partnerUser.lastName[0] : ""}`.toUpperCase()
             : partnerCode.slice(0, 2).toUpperCase(),
           lastMessage: latestMsg.content,
           timestamp: new Date(latestMsg.createdAt),
