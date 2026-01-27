@@ -227,7 +227,7 @@ useEffect(() => {
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Type a message..."
-            className="chat-input flex-1 resize-none rounded-3xl border-0 bg-gray-100 px-5 py-4 text-background focus:outline-none focus:ring-4 focus:ring-primary/20 focus:bg-foreground transition-all duration-200 placeholder:text-gray-500"
+            className="chat-input flex-1 resize-none rounded-3xl border-0 px-5 py-4 text-background focus:outline-none focus:ring-4 focus:ring-primary/20 bg-foreground transition-all duration-200 placeholder:text-gray-500"
             rows={1}
             style={{ minHeight: '56px', maxHeight: '170px' }}
           />
