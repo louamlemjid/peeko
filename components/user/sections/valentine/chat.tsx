@@ -152,6 +152,7 @@ useEffect(() => {
       } else {
         throw new Error(data.error || 'Unknown error');
       }
+      setSelectedAnim(undefined)
     } catch (error) {
       console.error('Send message error:', error);
       setMessages((prev) =>
