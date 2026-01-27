@@ -4,6 +4,8 @@ import { Send, ArrowLeft, SmileIcon } from 'lucide-react';
 import Link from 'next/link';
 import MessageCard from './messageCard';
 import { IMessage } from '@/model/message';
+import PictureMessage from './imageMessage';
+import Image from 'next/image';
 
 interface ChatProps {
   userCode: string;
@@ -21,7 +23,13 @@ interface DisplayMessage {
   status: 'sent' | 'delivered' | 'read';
   meta?: any;
 }
-
+type Animation = {
+  _id: string;
+  name: string;
+  category: string;
+  link: string;
+  imageUrl: string;
+};
 const Chat: React.FC<ChatProps> = ({
   name,
   avatarLetters,
@@ -32,7 +40,14 @@ const Chat: React.FC<ChatProps> = ({
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [inputText, setInputText] = useState('');
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const [showAnimationPicker, setShowAnimationPicker] = useState(false);
+  const [selectedAnim,setSelectedAnim] = useState<Animation>()
 
+const handleAnimationSelect = (animation: Animation) => {
+  // Add to message composer, send API call, etc.
+  setSelectedAnim(animation)
+  setShowAnimationPicker(false);
+};
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // Detect keyboard open/close via visualViewport
@@ -81,6 +96,7 @@ useEffect(() => {
       isMine: msg.source === currentUserCode,
       timestamp: new Date(msg.createdAt),
       status: msg.opened ? ('read' as const) : ('delivered' as const),
+      meta:msg.meta
     }));
     setMessages(converted);
   }, [initialMessages, currentUserCode]);
@@ -96,6 +112,7 @@ useEffect(() => {
       isMine: true,
       timestamp: new Date(),
       status: 'sent',
+      meta:selectedAnim
     };
 
     setMessages((prev) => [...prev, optimisticMessage]);
@@ -109,6 +126,7 @@ useEffect(() => {
           source: currentUserCode,
           destination: userCode,
           content: newMsgText,
+          meta:selectedAnim
         }),
       });
 
@@ -126,6 +144,7 @@ useEffect(() => {
                   isMine: true,
                   timestamp: new Date(savedMessage.createdAt),
                   status: 'delivered',
+                  meta:savedMessage.meta
                 }
               : m
           )
@@ -184,6 +203,7 @@ useEffect(() => {
             isMine={message.isMine}
             status={message.status}
             timestamp={message.timestamp}
+            meta={message.meta}
           />
         ))}
         
@@ -208,8 +228,13 @@ useEffect(() => {
             placeholder="Type a message..."
             className="chat-input flex-1 resize-none rounded-3xl border-0 bg-gray-100 px-5 py-4 text-background focus:outline-none focus:ring-4 focus:ring-primary/20 focus:bg-foreground transition-all duration-200 placeholder:text-gray-500"
             rows={1}
-            style={{ minHeight: '56px', maxHeight: '120px' }}
+            style={{ minHeight: '56px', maxHeight: '170px' }}
           />
+          <div>
+            {selectedAnim && (
+            <Image src={selectedAnim.imageUrl} alt={selectedAnim.name} width={60} height={60} className='rounded-lg' />
+          )}
+          </div>
           <button
             onClick={handleSend}
             disabled={!inputText.trim()}
@@ -217,9 +242,15 @@ useEffect(() => {
           >
             <Send className="h-6 w-6" />
           </button>
-          <div>
+          <div onClick={() => setShowAnimationPicker(true)}>
             <SmileIcon className="h-6 w-6" />
+            <PictureMessage
+              show={showAnimationPicker}
+              onClose={() => setShowAnimationPicker(false)}
+              onSelect={handleAnimationSelect}
+            />
           </div>
+
         </div>
       </div>
 
