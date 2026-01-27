@@ -42,8 +42,13 @@ export async function createPeeko(
   existingUser.peeko = peeko._id;
   await existingUser.save();
 
-  // 5️⃣ Serialize (Next.js safe)
-  return JSON.parse(JSON.stringify(peeko));
+  const peekoWithUser = await Peeko.findById(peeko._id).populate({
+      path: "user",
+      select: "firstName lastName email", // return only safe fields
+    });
+
+    // 6️⃣ Serialize (Next.js safe)
+    return JSON.parse(JSON.stringify(peekoWithUser));
   } catch (error:unknown) {
     throw new Error("Failed to create Pekko: "+error)
   }
