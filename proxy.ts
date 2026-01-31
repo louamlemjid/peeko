@@ -17,7 +17,8 @@ const ESP32_PEEKO_NEW_ROUTE = '/api/v1/peeko/new';
 const ESP32_MESSAGE_OPEN_ROUTE = '/api/v1/message/open/';
 // Base route for ESP32 GET
 const ESP32_GET_PEEKO_ROUTE = '/api/v1/peeko/';
-
+//ESP32_VERSION_LATEST
+const ESP32_VERSION_LATEST = '/api/v1/version/latestVersion';
 
 export default clerkMiddleware(async (auth, request: NextRequest) => {
   const { userId, sessionClaims } = await auth();
@@ -43,7 +44,27 @@ export default clerkMiddleware(async (auth, request: NextRequest) => {
     // Valid ESP32 request → continue
     return NextResponse.next();
   }
+	
+	/* =========================
+     🔐 ESP32 API KEY PROTECTION
+     GET /api/v1/version/latestVersion
+     ========================= */
+  if (
+    pathname === ESP32_VERSION_LATEST &&
+    request.method === 'GET'
+  ) {
+    const apiKey = request.headers.get('x-api-key');
 
+    if (!apiKey || apiKey !== process.env.ESP32_API_KEY) {
+      return new NextResponse(
+        'Forbidden: Invalid ESP32 API key',
+        { status: 403 }
+      );
+    }
+
+    // Valid ESP32 request → continue
+    return NextResponse.next();
+  }
   /* =========================
      🔐 ESP32 API KEY PROTECTION
      PATCH /api/v1/message/open/[userCode]
@@ -135,6 +156,7 @@ export const config = {
     '/dashboard/:path*',
     '/user/:path*',
     '/api/v1/peeko/new',
+    '/api/v1/version/latestVersion/',
     '/api/v1/message/open/:path*',
     '/api/v1/peeko/:path*',
     '/api/v1/:path*',
