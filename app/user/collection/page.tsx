@@ -43,7 +43,13 @@ export default function UserAnimationSetsPage() {
     setLoading(true);
     try {
       if(user){
-        const peekoRes = await fetch("/api/v1/peeko/"+user.userCode)
+        const peekoRes = await fetch("/api/v1/peeko/"+user.userCode,{
+          method:'GET',
+          headers:{
+            'Content-Type': 'application/json',
+            'x-api-key': process.env.ESP32_API_KEY!
+          }
+        })
         
         if(!peekoRes.ok){
           toast.error("Failed to get Peeko !")

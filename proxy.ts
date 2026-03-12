@@ -23,7 +23,7 @@ const ESP32_VERSION_LATEST = '/api/v1/version/latestVersion';
 export default clerkMiddleware(async (auth, request: NextRequest) => {
   const { userId, sessionClaims } = await auth();
   const { pathname } = request.nextUrl;
-  const secFetchSite = request.headers.get('sec-fetch-site');
+
   /* =========================
      🔐 ESP32 API KEY PROTECTION
      POST /api/v1/peeko/new
@@ -98,7 +98,7 @@ export default clerkMiddleware(async (auth, request: NextRequest) => {
 
     if (!isInternalPatch) {
       const apiKey = request.headers.get('x-api-key');
-      if (!apiKey || apiKey !== process.env.ESP32_API_KEY || secFetchSite !== 'same-origin') {
+      if (!apiKey || apiKey !== process.env.ESP32_API_KEY) {
         return new NextResponse(
           'Forbidden: Invalid ESP32 API key',
           { status: 403 }
