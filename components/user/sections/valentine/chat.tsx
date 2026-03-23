@@ -214,9 +214,7 @@ useEffect(() => {
       <div
         className="sticky bottom-0 bg-white px-5 py-4 shadow-2xl"
         style={{
-          paddingBottom: isKeyboardOpen
-            ? 'var(--input-area-height, 290px)' // adjust fallback if your input + button area is taller/shorter
-            : 'env(safe-area-inset-bottom, 16px)',
+          
           transition: 'padding-bottom 0.25s ease-out',
         }}
       >
