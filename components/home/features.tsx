@@ -108,7 +108,7 @@ export default function Features() {
   const [activeMood, setActiveMood] = useState(moods[0]); // default: studying
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-slate-950 to-black text-white">
+    <section className="py-16 md:py-24 bg-gradient-to-b from-cyan-950 to-black text-white rounded-3xl">
       <div className="container mx-auto px-6">
         {/* Mood Carousel */}
         <div className="mb-12">
@@ -117,16 +117,16 @@ export default function Features() {
           </h2>
 
           <div className="flex justify-center">
-            <div className="inline-flex bg-slate-900/70 backdrop-blur-sm p-3 rounded-full border border-slate-700/50 shadow-xl">
+            <div className="inline-flex bg-cyan-900/20 backdrop-blur-sm p-3 rounded-4xl border border-cyan-700/50 shadow-xl overflow-hidden">
               {moods.map((mood) => (
                 <button
                   key={mood.id}
                   onClick={() => setActiveMood(mood)}
                   className={cn(
-                    "flex flex-col items-center px-5 py-3 mx-1 rounded-2xl transition-all duration-300 min-w-[90px]",
+                    "flex flex-col items-center px-5 py-3 mx-1 rounded-full transition-all duration-300 min-w-[90px]",
                     activeMood.id === mood.id
-                      ? `bg-gray-700 shadow-lg shadow-black/40 scale-105`
-                      : `bg-gray-900 hover:scale-105`
+                      ? `bg-cyan-900 shadow-lg shadow-black/40 scale-105`
+                      : `bg-cyan-900/20 hover:scale-105`
                   )}
                 >
                   <span className="text-3xl mb-1.5">{mood.icon}</span>
@@ -139,7 +139,7 @@ export default function Features() {
 
         {/* Active Mood Display */}
         <div className="max-w-5xl mx-auto">
-          <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl border border-slate-700/50 overflow-hidden shadow-2xl">
+          <div className="bg-cyan-900/60 backdrop-blur-md rounded-3xl border border-slate-700/50 overflow-hidden shadow-2xl">
             <div className="flex flex-col md:flex-row">
               {/* GIF / Visual Area */}
               <div className="md:w-3/5 bg-black/40 relative aspect-video md:aspect-auto">
