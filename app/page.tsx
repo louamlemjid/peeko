@@ -1,6 +1,9 @@
 // app/page.tsx
 import Features from '@/components/home/features';
+import FeaturesTabbie from '@/components/home/featuresTabbie';
 import HeroSection from '@/components/home/hero';
+import HeroTabbie from '@/components/home/heroTabbie';
+import PricingTabbie from '@/components/home/pricingTabbie';
 
 
 export default function Home() {
@@ -12,9 +15,11 @@ export default function Home() {
       {/* Hero Section */}
       <div className="relative  pb-20 md:pt-40 md:pb-32 px-5 sm:px-8 md:px-12 lg:px-20">
         <div className="max-w-7xl mx-auto flex flex-col gap-6">
-          <HeroSection />
+          <HeroTabbie />
           
-          <Features/>
+          <FeaturesTabbie/>
+
+          <PricingTabbie/>
         </div>
       </div>
 
