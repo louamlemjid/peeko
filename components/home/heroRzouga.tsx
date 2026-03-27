@@ -60,7 +60,7 @@ const HeroRzouga = ({ onReserveClick }: { onReserveClick: () => void }) => {
   return (
     <section
       className={`overflow-hidden text-[#00B7B5] flex flex-col justify-center h-[80vh]`}
-      style={{ backgroundImage: `linear-gradient(to left, #00B7B5,#fff, #fff)` }}
+      style={{ backgroundImage: `linear-gradient(to left, #fff,#fff, #fff)` }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex-grow grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         {/* LEFT COLUMN: Text Content */}
