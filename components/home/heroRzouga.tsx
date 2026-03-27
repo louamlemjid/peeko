@@ -6,7 +6,7 @@ import LottieAnimation from '@/components/home/LottieAnimation';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 
-const primaryDarkBlue = '#00bcf0';
+const primaryDarkBlue = '#00B7B5';
 
 // Animation variants for text content
 const textVariants: Variants = {
@@ -59,8 +59,8 @@ const HeroRzouga = ({ onReserveClick }: { onReserveClick: () => void }) => {
   }, [navbarHeight]);
   return (
     <section
-      className={`overflow-hidden text-cyan-500 flex flex-col justify-center h-[80vh]`}
-      style={{ backgroundImage: `linear-gradient(to left, #00bcf0,#fff, #fff)` }}
+      className={`overflow-hidden text-[#00B7B5] flex flex-col justify-center h-[80vh]`}
+      style={{ backgroundImage: `linear-gradient(to left, #00B7B5,#fff, #fff)` }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex-grow grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         {/* LEFT COLUMN: Text Content */}
@@ -71,7 +71,7 @@ const HeroRzouga = ({ onReserveClick }: { onReserveClick: () => void }) => {
           variants={textVariants}
         >
           <motion.h1
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight drop-shadow-md mb-3"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-primary/60 font-extrabold leading-tight drop-shadow-md mb-3"
             variants={textVariants}
           >
             Your smart productivity companion.<br />
