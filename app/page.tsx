@@ -1,28 +1,30 @@
+'use client'
 // app/page.tsx
 import Features from '@/components/home/features';
 import FeaturesTabbie from '@/components/home/featuresTabbie';
 import HeroSection from '@/components/home/hero';
+import HeroRzouga from '@/components/home/heroRzouga';
 import HeroTabbie from '@/components/home/heroTabbie';
 import PricingTabbie from '@/components/home/pricingTabbie';
 
 
 export default function Home() {
+  const scrollToCenters = () => {
+    document.getElementById('centers-section')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  };
   return (
-    <main className="min-h-screen bg-gradient-to-b from-black via-cyan-950/60 to-black text-white overflow-hidden">
+    <main className="flex-grow w-full">
       {/* Navigation (optional - add if needed) */}
       {/* <nav>...</nav> */}
 
       {/* Hero Section */}
-      <div className="relative  pb-20 md:pt-40 md:pb-32 px-5 sm:px-8 md:px-12 lg:px-20">
-        <div className="max-w-7xl mx-auto flex flex-col gap-6">
-          <HeroTabbie />
+     
+          <HeroRzouga onReserveClick={scrollToCenters} />
           
-          <FeaturesTabbie/>
-
-          <PricingTabbie/>
-        </div>
-      </div>
-
+     
       {/* Add to globals.css or tailwind.config for animations */}
       {/*
         @keyframes pulse-slow {
