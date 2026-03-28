@@ -127,7 +127,7 @@ const HeroRzouga = () => {
           Check Peeko
         </motion.button>
           <motion.button
-          onClick={()=>router.push('https://robotxwebsite3.vercel.app/produits/687923f4f7dca89d15109f2f')}
+          onClick={()=>router.push('https://robotxwebsite3.vercel.app/produits/69c7966437ec61ccbc86a63b')}
           className="inline-flex items-center justify-center text-foreground font-extrabold 
             py-2 px-4 text-base sm:py-2.5 sm:px-5 sm:text-base md:py-2.5 md:px-6 md:text-lg lg:text-xl 
             rounded-lg shadow-xl hover:backdrop-blur-none transition-all duration-300 
