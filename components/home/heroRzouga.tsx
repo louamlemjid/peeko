@@ -106,12 +106,12 @@ const HeroRzouga = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-6 flex justify-center gap-4">
         <motion.button
           onClick={()=>router.push("/user")}
-          className="inline-flex items-center justify-center bg-white font-extrabold 
+          className="inline-flex items-center justify-center bg-foreground font-extrabold 
             py-2 px-4 text-base sm:py-2.5 sm:px-5 sm:text-base md:py-2.5 md:px-6 md:text-lg lg:text-xl 
-            rounded-lg shadow-xl hover:bg-gray-100 transition-all duration-300 
+            rounded-lg shadow-xl  transition-all duration-300 
             transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white 
-            focus:ring-opacity-75 group w-3/4 sm:w-auto"
-          style={{ color: primaryDarkBlue }}
+            focus:ring-opacity-75 group w-3/4 sm:w-auto text-background"
+          
           aria-label="Réservez votre contrôle technique"
           type="button"
           initial="hidden"
@@ -121,8 +121,8 @@ const HeroRzouga = () => {
           whileTap="tap"
         >
           <AlignVerticalJustifyStart 
-            className="mr-2 h-4 w-4 sm:mr-2.5 sm:h-5 sm:w-5" 
-            style={{ color: primaryDarkBlue }} 
+            className="mr-2 h-4 w-4 sm:mr-2.5 sm:h-5 sm:w-5 text-background" 
+            
           />
           Check Peeko
         </motion.button>
