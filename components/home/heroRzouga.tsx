@@ -6,7 +6,7 @@ import LottieAnimation from '@/components/home/LottieAnimation';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-const primaryDarkBlue = '#00B7B5';
+const primaryDarkBlue = '#1d232f'// '#00B7B5';
 
 // Animation variants for text content
 const textVariants: Variants = {
@@ -60,8 +60,8 @@ const HeroRzouga = ({ onReserveClick }: { onReserveClick: () => void }) => {
   }, [navbarHeight]);
   return (
     <section
-      className={`overflow-hidden text-[#1d232f] flex flex-col justify-center h-[80vh]`}
-      style={{ backgroundImage: `linear-gradient(to left, #fff,#fff, #fff)` }}
+      className={`overflow-hidden text-foreground flex flex-col justify-center h-[80vh] bg-radial from-[#00B7B5] from-0% to-background to-65%`}
+      
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex-grow grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         {/* LEFT COLUMN: Text Content */}
@@ -72,18 +72,20 @@ const HeroRzouga = ({ onReserveClick }: { onReserveClick: () => void }) => {
           variants={textVariants}
         >
           <motion.h1
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#1d232f] font-extrabold leading-tight drop-shadow-md mb-3"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground font-extrabold leading-tight drop-shadow-md mb-3"
             variants={textVariants}
           >
-            Your smart productivity companion.<br />
-        A cute robot.
+          <p className="text-5xl mb-6">Meet Peeko </p> 
+            Your smart productivity companion.
           </motion.h1>
           <motion.p
             className="text-base sm:text-lg mt-3 max-w-md opacity-90 drop-shadow-sm mx-auto md:mx-0"
             variants={textVariants}
             transition={{ delay: 0.2 }}
           >
-            Réservez votre contrôle technique en quelques clics, facilement et rapidement.
+         
+        Cute, intelligent, and ready to assist. — one click away.
+            
           </motion.p>
         </motion.div>
 
@@ -126,12 +128,12 @@ const HeroRzouga = ({ onReserveClick }: { onReserveClick: () => void }) => {
         </motion.button>
           <motion.button
           onClick={()=>router.push('https://robotxwebsite3.vercel.app/produits/687923f4f7dca89d15109f2f')}
-          className="inline-flex items-center justify-center text-white font-extrabold 
+          className="inline-flex items-center justify-center text-foreground font-extrabold 
             py-2 px-4 text-base sm:py-2.5 sm:px-5 sm:text-base md:py-2.5 md:px-6 md:text-lg lg:text-xl 
-            rounded-lg shadow-xl hover:bg-gray-100 transition-all duration-300 
+            rounded-lg shadow-xl hover:backdrop-blur-none transition-all duration-300 
             transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white 
-            focus:ring-opacity-75 group w-3/4 sm:w-auto"
-          style={{ backgroundColor: primaryDarkBlue }}
+            focus:ring-opacity-75 group w-3/4 sm:w-auto backdrop-blur-md border-2 border-foreground"
+          
           aria-label="Réservez votre contrôle technique"
           type="button"
           initial="hidden"
@@ -142,7 +144,7 @@ const HeroRzouga = ({ onReserveClick }: { onReserveClick: () => void }) => {
         >
           <ShoppingCart 
             className="mr-2 h-4 w-4 sm:mr-2.5 sm:h-5 sm:w-5" 
-            style={{ color: 'white' }} 
+            
           />
           Pre-Order
         </motion.button>

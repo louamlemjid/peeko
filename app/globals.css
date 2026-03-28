@@ -25,13 +25,13 @@
 
 :root {
   --background: #ffffff;
-  --foreground: hsl(0 0% 9%);
+  --foreground: #1d232f;
 }
 
 /* Dark mode (prefers-color-scheme) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: hsl(0 0% 6%);
+    --background: #1d232f;
     --foreground: hsl(0 0% 91%);
     /* Optionally override UI colors for dark mode */
     /* --color-primary: #your-dark-primary; */
@@ -48,5 +48,12 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+.bg-radial-main {
+  background: radial-gradient(
+    circle,
+    rgba(0, 183, 181, 1) 0%,
+    rgb(var(--foreground)) 75%
+  );
 }
 
