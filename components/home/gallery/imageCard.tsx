@@ -11,7 +11,7 @@ export default function ImageCard({ imagePath, alt = "Card image" }: ImageCardPr
 
   return (
    <div className="group relative overflow-hidden rounded-lg  bg-white shadow-sm transition-all duration-300 hover:-translate-y-[2px] hover:shadow-lg active:scale-[0.985]">
-  <div className="relative w-full h-[24rem] sm:h-[28rem] md:h-[32rem] lg:h-[36rem] overflow-hidden">
+  <div className="relative w-full h-[38rem] sm:h-[28rem] md:h-[32rem] lg:h-[36rem] overflow-hidden">
     <Image
       src={imagePath}
       alt={alt}
