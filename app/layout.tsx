@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Navigation from "@/components/NavBar";
 import { ToastContainer } from "react-toastify";
 import Footer from "@/components/footer";
+import ScrollUpButton from "@/components/ScrollUpButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
             </header>
         <div className="mt-16">
           {children}
+          <ScrollUpButton />
         </div>
         <ToastContainer
               position="top-right"

@@ -40,7 +40,7 @@ const buttonVariants: Variants = {
   tap: { scale: 0.95 },
 };
 
-const HeroRzouga = ({ onReserveClick }: { onReserveClick: () => void }) => {
+const HeroRzouga = () => {
   const [navbarHeight, setNavbarHeight] = useState(0);
   const router = useRouter()
 
