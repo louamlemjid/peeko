@@ -5,7 +5,7 @@ import { AlignVerticalJustifyStart, CalendarDays, ShoppingCart } from 'lucide-re
 import LottieAnimation from '@/components/home/LottieAnimation';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
-
+import { useRouter } from 'next/navigation';
 const primaryDarkBlue = '#00B7B5';
 
 // Animation variants for text content
@@ -42,6 +42,7 @@ const buttonVariants: Variants = {
 
 const HeroRzouga = ({ onReserveClick }: { onReserveClick: () => void }) => {
   const [navbarHeight, setNavbarHeight] = useState(0);
+  const router = useRouter()
 
   useEffect(() => {
     const updateNavbarHeight = () => {
@@ -102,7 +103,7 @@ const HeroRzouga = ({ onReserveClick }: { onReserveClick: () => void }) => {
       {/* Button Section - Now below the main grid content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-6 flex justify-center gap-4">
         <motion.button
-          onClick={onReserveClick}
+          onClick={()=>router.push("/user")}
           className="inline-flex items-center justify-center bg-white font-extrabold 
             py-2 px-4 text-base sm:py-2.5 sm:px-5 sm:text-base md:py-2.5 md:px-6 md:text-lg lg:text-xl 
             rounded-lg shadow-xl hover:bg-gray-100 transition-all duration-300 
@@ -124,7 +125,7 @@ const HeroRzouga = ({ onReserveClick }: { onReserveClick: () => void }) => {
           Check Peeko
         </motion.button>
           <motion.button
-          onClick={onReserveClick}
+          onClick={()=>router.push('https://robotxwebsite3.vercel.app/produits/687923f4f7dca89d15109f2f')}
           className="inline-flex items-center justify-center text-white font-extrabold 
             py-2 px-4 text-base sm:py-2.5 sm:px-5 sm:text-base md:py-2.5 md:px-6 md:text-lg lg:text-xl 
             rounded-lg shadow-xl hover:bg-gray-100 transition-all duration-300 

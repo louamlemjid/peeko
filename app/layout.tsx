@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Peeko",
+  title: "Peeko | Your prodactivity companion robot",
   description: "Peeko",
 };
 
