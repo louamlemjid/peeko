@@ -1,7 +1,7 @@
 'use client';
 
 import Lottie from 'lottie-react';
-import animationData from '@/public/Phoenix.json';
+import animationData from '@/public/Phoenix_color_change.json';
 
 const LottieAnimation = () => {
   return (
